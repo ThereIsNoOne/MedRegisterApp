@@ -10,28 +10,17 @@
     <mapping uuid="37b5d500-4a11-4e4a-8bd7-77f808539b8e" name="Medregister Mapping">
       <data-sources db="5ddbab3f-bd6c-4ca0-97ab-aa48b5df1799" ddl="346ab1da-9e5f-4e1f-baa9-e38ebc895658" />
     </mapping>
-  </component>
-  <component name="SqlDataSourceStorage">
-    <option name="dataSources">
-      <list>
-        <State>
-          <option name="id" value="346ab1da-9e5f-4e1f-baa9-e38ebc895658" />
-          <option name="name" value="Medregister (DDL)" />
-          <option name="dbmsName" value="MYSQL" />
-          <option name="urls">
-            <array>
-              <option value="file://$PROJECT_DIR$/SQL" />
-            </array>
-          </option>
-          <option name="outLayout" value="File per object by schema.groovy" />
-          <option name="scriptOptions">
-            <map>
-              <entry key="CreateIfNotExists" value="1" />
-              <entry key="CreateOrReplace" value="1" />
-            </map>
-          </option>
-        </State>
-      </list>
-    </option>
+    <mapping uuid="263c5b72-728c-4e80-b663-0e180dabbf44" name="medreg@localhost Mapping">
+      <data-sources db="f7a84970-442a-449d-89f6-30f241e99c42" ddl="1ef8e34b-4f0b-48d1-8e3f-a68e9dfe0977" />
+      <scope>
+        <node negative="1">
+          <node kind="schema" qname="medreg" />
+          <node kind="database" qname="@" />
+        </node>
+      </scope>
+    </mapping>
+    <mapping uuid="6d28083e-c96f-4512-b43a-0b5a184b1734" name="DDL data source Mapping">
+      <data-sources ddl="3338e425-8076-408b-859b-f02702f1a3ca" />
+    </mapping>
   </component>
 </project>

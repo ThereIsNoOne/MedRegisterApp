@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="Medregister" uuid="5ddbab3f-bd6c-4ca0-97ab-aa48b5df1799">
+    <data-source source="LOCAL" name="medreg@localhost" uuid="f7a84970-442a-449d-89f6-30f241e99c42">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://localhost:3306/medregister</jdbc-url>
+      <jdbc-url>jdbc:mysql://localhost:3306/medreg</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

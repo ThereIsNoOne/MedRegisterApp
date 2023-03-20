@@ -1,16 +1,26 @@
+import java.io.IOException;
 import java.sql.*;
 
-public class Main {
-    public static void main(String[] args) throws SQLException {
+// TODO: Add dump method
 
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/mydb", "root", "x2nmlc10");
+public class Main {
+    public static void main(String[] args) throws SQLException, IOException {
+
+        update();
+
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/medreg", "root", "jkl123JKL!@#");
 
         Statement statement = connection.createStatement();
 
-        ResultSet resultSet = statement.executeQuery("select * from employees");
+        ResultSet resultSet = statement.executeQuery("select * from auth");
 
         while (resultSet.next()) {
-            System.out.println(resultSet.getString("first_name"));
+            System.out.println(resultSet.getString("login"));
         }
+    }
+
+    public static void update() throws IOException {
+        String command = "\"C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysql.exe\" -h localhost -uroot -pjkl123JKL!@# medreg < SQL/auth.sql";
+        Runtime.getRuntime().exec("cmd /c"+ command);
     }
 }

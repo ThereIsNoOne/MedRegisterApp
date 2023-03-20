@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.32, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: medregister
+-- Host: 127.0.0.1    Database: medreg
 -- ------------------------------------------------------
 -- Server version	8.0.32
 
@@ -24,7 +24,7 @@ DROP TABLE IF EXISTS `auth`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `auth` (
   `login` varchar(50) DEFAULT NULL,
-  `hash` varchar(50) DEFAULT NULL
+  `md4` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -34,7 +34,7 @@ CREATE TABLE `auth` (
 
 LOCK TABLES `auth` WRITE;
 /*!40000 ALTER TABLE `auth` DISABLE KEYS */;
-INSERT INTO `auth` VALUES ('admin','aa195ff507ecd642871030967905f65f'),('tester','db346d691d7acc4dc2625db19f9e3f52');
+INSERT INTO `auth` (`login`, `md4`) VALUES ('admin','admin123');
 /*!40000 ALTER TABLE `auth` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -47,4 +47,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-03-19 22:08:38
+-- Dump completed on 2023-03-20 20:59:47
