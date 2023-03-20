@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DdlMappings">
+    <mapping uuid="6d0e2ca1-7372-4bd3-acde-9e1e52d775db" name="MedRegister Mapping">
+      <data-sources db="3c119df9-6561-474a-a17a-1012b3dade63" ddl="dfbf238c-ca1b-4c5c-95d5-e9a5ab142a78" />
+      <scope>
+        <node kind="schema" qname="medregister" />
+      </scope>
+    </mapping>
+    <mapping uuid="37b5d500-4a11-4e4a-8bd7-77f808539b8e" name="Medregister Mapping">
+      <data-sources db="5ddbab3f-bd6c-4ca0-97ab-aa48b5df1799" ddl="346ab1da-9e5f-4e1f-baa9-e38ebc895658" />
+    </mapping>
+  </component>
+  <component name="SqlDataSourceStorage">
+    <option name="dataSources">
+      <list>
+        <State>
+          <option name="id" value="346ab1da-9e5f-4e1f-baa9-e38ebc895658" />
+          <option name="name" value="Medregister (DDL)" />
+          <option name="dbmsName" value="MYSQL" />
+          <option name="urls">
+            <array>
+              <option value="file://$PROJECT_DIR$/SQL" />
+            </array>
+          </option>
+          <option name="outLayout" value="File per object by schema.groovy" />
+          <option name="scriptOptions">
+            <map>
+              <entry key="CreateIfNotExists" value="1" />
+              <entry key="CreateOrReplace" value="1" />
+            </map>
+          </option>
+        </State>
+      </list>
+    </option>
+  </component>
+</project>
