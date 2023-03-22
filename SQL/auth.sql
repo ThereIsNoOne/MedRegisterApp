@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.32, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: medreg
+-- Host: localhost    Database: medreg
 -- ------------------------------------------------------
 -- Server version	8.0.32
 
@@ -47,4 +47,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-03-20 20:59:47
+-- Dump completed on 2023-03-22 22:32:08

@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.*;
@@ -27,7 +28,12 @@ public class DatabaseConnector {
     }
 
     public void exportAuthDB() {
-
+        String command = "\"C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysqldump.exe\" -h localhost -u"+this.user+" -p"+this.password+" medreg --complete-insert --result-file=SQL/auth.sql auth";
+        try {
+            Runtime.getRuntime().exec("cmd /c "+command);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void importRegDB() {
@@ -40,7 +46,12 @@ public class DatabaseConnector {
     }
 
     public void exportRegDB() {
-
+        String command = "\"C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysqldump.exe\" -h localhost -u"+this.user+" -p"+this.password+" medreg --complete-insert --result-file=SQL/reg.sql reg";
+        try {
+            Runtime.getRuntime().exec("cmd /c "+command);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void getValue() throws SQLException {
