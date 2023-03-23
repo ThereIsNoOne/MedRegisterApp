@@ -8,8 +8,8 @@ public class Main {
 
         DatabaseConnector connector = new DatabaseConnector();
 
-//        connector.importAuthDB();
-        connector.exportAuthDB();
+        connector.importAuthDB();
+//        connector.exportAuthDB();
         connector.getValue();
     }
 

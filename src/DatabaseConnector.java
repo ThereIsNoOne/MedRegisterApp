@@ -1,25 +1,35 @@
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.*;
-import java.util.Properties;
 
 public class DatabaseConnector {
 
-    private String user;
-    private String password;
+    private enum Mode {EXPORT, IMPORT}
+
+    private final String user;
+    private final String password;
+    private final String dbPath;
+    private final String dbName;
+    private final String authName;
+    private final String authPath;
+    private final String regName;
+    private final String regPath;
+    private final String url;
 
     DatabaseConnector() throws IOException {
-        String pathConfig = "res/config.properties";
-        FileInputStream propsInput = new FileInputStream(pathConfig);
-        Properties properties = new Properties();
-        properties.load(propsInput);
-        this.user = properties.getProperty("DB_USER");
-        this.password = properties.getProperty("DB_PASSWORD");
+        PropertiesManager propManager = new PropertiesManager("res/config.properties");
+        this.user = propManager.getDBUser();
+        this.password = propManager.getDBPassword();
+        this.dbPath = propManager.getDBPath();
+        this.dbName = propManager.getDBName();
+        this.authName = propManager.getAuthName();
+        this.authPath = propManager.getAuthPath();
+        this.regName = propManager.getRegName();
+        this.regPath = propManager.getRegPath();
+        this.url = propManager.getUrl();
     }
 
     public void importAuthDB() {
-        String command = String.format("\"C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysql.exe\" -h localhost -u"+this.user+" -p%s medreg < SQL/auth.sql", password);
+        String command = generateCommand(authName, authPath, Mode.IMPORT);
         try {
             Runtime.getRuntime().exec("cmd /c"+command);
         } catch (IOException e) {
@@ -28,7 +38,7 @@ public class DatabaseConnector {
     }
 
     public void exportAuthDB() {
-        String command = "\"C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysqldump.exe\" -h localhost -u"+this.user+" -p"+this.password+" medreg --complete-insert --result-file=SQL/auth.sql auth";
+        String command = generateCommand(authName, authPath, Mode.EXPORT);
         try {
             Runtime.getRuntime().exec("cmd /c "+command);
         } catch (IOException e) {
@@ -37,7 +47,7 @@ public class DatabaseConnector {
     }
 
     public void importRegDB() {
-        String command = "\"C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysql.exe\" -h localhost -u"+"root"+" -p"+this.password+" medreg < SQL/reg.sql";
+        String command = generateCommand(regName, regPath, Mode.IMPORT);
         try {
             Runtime.getRuntime().exec("cmd /c"+ command);
         } catch (IOException e) {
@@ -46,7 +56,7 @@ public class DatabaseConnector {
     }
 
     public void exportRegDB() {
-        String command = "\"C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysqldump.exe\" -h localhost -u"+this.user+" -p"+this.password+" medreg --complete-insert --result-file=SQL/reg.sql reg";
+        String command = generateCommand(regName, regPath, Mode.EXPORT);
         try {
             Runtime.getRuntime().exec("cmd /c "+command);
         } catch (IOException e) {
@@ -54,23 +64,18 @@ public class DatabaseConnector {
         }
     }
 
-    public void getValue() throws SQLException {
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/medreg", this.user, password);
 
-        Statement statement = connection.createStatement();
 
-        ResultSet resultSet = statement.executeQuery("select * from auth");
-
-        while (resultSet.next()) {
-            System.out.println(resultSet.getString("login"));
+    private String generateCommand(String tableName, String tablePath, Mode mode) {
+        switch (mode) {
+            case EXPORT -> {
+                return dbPath+"mysqldump.exe\" -h localhost -u"+user+" -p"+password+" "+dbName+" --complete-insert --result-file="+tablePath+" "+tableName;
+            }
+            case IMPORT -> {
+                return dbPath+"mysql.exe\" -h localhost -u"+user+" -p"+password+" "+dbName+" < "+tablePath;
+            }
+            default -> throw new IllegalStateException("Unknown mode");
         }
     }
 
-    public void setUser(String value) {
-        this.user = value;
-    }
-
-    public void setPassword(String value) {
-        this.password = value;
-    }
 }
