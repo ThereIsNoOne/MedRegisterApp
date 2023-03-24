@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.sql.*;
+import java.time.LocalDateTime;
 
 public class DatabaseConnector {
 
@@ -64,6 +65,9 @@ public class DatabaseConnector {
         }
     }
 
+    public void insertRow(float value, LocalDateTime date, ValueType type) {
+
+    }
 
 
     private String generateCommand(String tableName, String tablePath, Mode mode) {
