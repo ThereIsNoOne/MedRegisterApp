@@ -1,3 +1,0 @@
-public enum ValueType {
-    TEMPERATURE, BLOOD_PRESSURE, SUGAR_LEVEL
-}

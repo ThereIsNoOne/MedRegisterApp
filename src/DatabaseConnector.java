@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class DatabaseConnector {
 
@@ -65,8 +66,27 @@ public class DatabaseConnector {
         }
     }
 
-    public void insertRow(float value, LocalDateTime date, ValueType type) {
+    public void insertRow(int userId, float value, LocalDateTime date, String type) throws SQLException {
+        Connection connection;
+        try {
+            connection = generateConnection();
+        } catch (SQLException e) {
+            throw new RuntimeException("Cannot connect to database, check if it exists and/or your password/login!");
+        }
+        // TODO: Add validation for rows (cannot add two identical rows, the same date and so on)
+        String sqlStm = "INSERT INTO reg values (?, ?, ?, ?);";
 
+        PreparedStatement prepStmt = connection.prepareStatement(sqlStm);
+        prepStmt.setInt(1, userId);
+        prepStmt.setString(2, type);
+        prepStmt.setFloat(3, value);
+        prepStmt.setTimestamp(4, Timestamp.valueOf(date));
+        prepStmt.executeUpdate();
+    }
+
+    private Connection generateConnection() throws SQLException {
+
+        return DriverManager.getConnection(url, user, password);
     }
 
 
