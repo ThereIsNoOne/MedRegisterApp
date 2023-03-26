@@ -1,9 +1,8 @@
 import java.io.IOException;
 import java.sql.*;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
-public class DatabaseConnector {
+class DatabaseConnector {
 
     private enum Mode {EXPORT, IMPORT}
 
@@ -30,7 +29,7 @@ public class DatabaseConnector {
         this.url = propManager.getUrl();
     }
 
-    public void importAuthDB() {
+    void importAuthDB() {
         String command = generateCommand(authName, authPath, Mode.IMPORT);
         try {
             Runtime.getRuntime().exec("cmd /c"+command);
@@ -39,7 +38,7 @@ public class DatabaseConnector {
         }
     }
 
-    public void exportAuthDB() {
+    void exportAuthDB() {
         String command = generateCommand(authName, authPath, Mode.EXPORT);
         try {
             Runtime.getRuntime().exec("cmd /c "+command);
@@ -48,7 +47,7 @@ public class DatabaseConnector {
         }
     }
 
-    public void importRegDB() {
+    void importRegDB() {
         String command = generateCommand(regName, regPath, Mode.IMPORT);
         try {
             Runtime.getRuntime().exec("cmd /c"+ command);
@@ -57,7 +56,7 @@ public class DatabaseConnector {
         }
     }
 
-    public void exportRegDB() {
+    void exportRegDB() {
         String command = generateCommand(regName, regPath, Mode.EXPORT);
         try {
             Runtime.getRuntime().exec("cmd /c "+command);
@@ -66,7 +65,7 @@ public class DatabaseConnector {
         }
     }
 
-    public void insertRow(int userId, float value, LocalDateTime date, String type) throws SQLException {
+    void insertRow(int userId, float value, LocalDateTime date, String type) throws SQLException {
         Connection connection;
         try {
             connection = generateConnection();
@@ -82,6 +81,26 @@ public class DatabaseConnector {
         prepStmt.setFloat(3, value);
         prepStmt.setTimestamp(4, Timestamp.valueOf(date));
         prepStmt.executeUpdate();
+    }
+
+    String getHash (String login) throws SQLException {
+        Connection connection;
+        try {
+            connection = generateConnection();
+        }
+        catch (SQLException e) {
+            throw new RuntimeException("Cannot connect to database, check if it exists and/or your password/login!");
+        }
+
+        Statement statement = connection.createStatement();
+
+        ResultSet resultSet = statement.executeQuery("select * from auth where login=\""+login+"\";");
+//
+//        while (resultSet.next()) {
+//            System.out.println(resultSet.getString("hash"));
+//        }
+        resultSet.next();
+        return resultSet.getString("hash");
     }
 
     private Connection generateConnection() throws SQLException {
