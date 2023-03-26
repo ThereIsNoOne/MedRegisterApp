@@ -2,6 +2,10 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
+// TODO: Add method to update current user (userId and loggedIn) in config.properties file.
+// TODO: Add getter for current user data.
+// TODO: Start working on GUI (finally).
+
 public class Main {
     public static void main(String[] args) throws IOException, SQLException, NoSuchAlgorithmException {
 

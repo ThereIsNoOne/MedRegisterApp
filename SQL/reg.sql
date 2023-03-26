@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.32, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: medreg
+-- Host: localhost    Database: medreg
 -- ------------------------------------------------------
 -- Server version	8.0.32
 
@@ -23,7 +23,10 @@ DROP TABLE IF EXISTS `reg`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `reg` (
-  `id` varchar(15) DEFAULT NULL
+  `login` varchar(50) DEFAULT NULL,
+  `type` varchar(25) DEFAULT NULL,
+  `value` decimal(4,2) DEFAULT NULL,
+  `register_time` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -33,6 +36,7 @@ CREATE TABLE `reg` (
 
 LOCK TABLES `reg` WRITE;
 /*!40000 ALTER TABLE `reg` DISABLE KEYS */;
+INSERT INTO `reg` (`login`, `type`, `value`, `register_time`) VALUES ('admin','temperature',36.60,'2023-03-24 17:26:11'),('admin','temperature',36.70,'2023-03-25 21:45:22');
 /*!40000 ALTER TABLE `reg` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -45,4 +49,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-03-20 20:57:29
+-- Dump completed on 2023-03-26 21:13:42

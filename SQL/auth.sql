@@ -24,7 +24,7 @@ DROP TABLE IF EXISTS `auth`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `auth` (
   `login` varchar(50) DEFAULT NULL,
-  `md4` varchar(50) DEFAULT NULL
+  `hash` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -34,7 +34,7 @@ CREATE TABLE `auth` (
 
 LOCK TABLES `auth` WRITE;
 /*!40000 ALTER TABLE `auth` DISABLE KEYS */;
-INSERT INTO `auth` (`login`, `md4`) VALUES ('admin','admin123'),('admin2','admin123');
+INSERT INTO `auth` (`login`, `hash`) VALUES ('admin','55f55e982dfcd7f878993ec61c361009'),('admin2','761e9361c88d23f46163b221f141652d'),('tester1','16bcbb61e1c534d3ba6770e5531b2a63'),('Szymon Stanislaw Lasota','675e279e16b0b0b391ea740fa4630d38');
 /*!40000 ALTER TABLE `auth` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -47,4 +47,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-03-23 20:25:42
+-- Dump completed on 2023-03-26 21:13:42
