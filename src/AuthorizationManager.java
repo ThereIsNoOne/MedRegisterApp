@@ -1,7 +1,6 @@
 import java.io.IOException;
 import  java.security.*;
 import java.sql.SQLException;
-import java.util.Arrays;
 
 public class AuthorizationManager {
 
@@ -15,15 +14,31 @@ public class AuthorizationManager {
         this.dbConnector = new DatabaseConnector();
     }
 
+    public void registerUser(String login, String password) throws SQLException {
+        if (dbConnector.validateRegistration(login)) {
+            byte[] bytes = msgDigest.digest((password + salt).getBytes());
+            String hash = bytesToHex(bytes);
+            dbConnector.registerUser(login, hash);
+        }
+        else {
+            throw new IllegalArgumentException("login already used!");
+        }
+    }
+
     public boolean authorizeUser (String login, String password) {
         byte[] bytes = msgDigest.digest((password + salt).getBytes());
         String hash = bytesToHex(bytes);
         String hashToCompare;
         try {
             hashToCompare = dbConnector.getHash(login);
-            System.out.println(hash.equals(dbConnector.getHash(login)));
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }
+        if (hash.equals(hashToCompare)) {
+            System.out.println("Authorized"); // DEBUG statement
+        }
+        else {
+            System.out.println("Not authorized!");
         }
         return hash.equals(hashToCompare);
     }

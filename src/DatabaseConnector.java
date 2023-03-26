@@ -65,47 +65,66 @@ class DatabaseConnector {
         }
     }
 
-    void insertRow(int userId, float value, LocalDateTime date, String type) throws SQLException {
-        Connection connection;
-        try {
-            connection = generateConnection();
-        } catch (SQLException e) {
-            throw new RuntimeException("Cannot connect to database, check if it exists and/or your password/login!");
-        }
+    void insertRow(String userId, float value, LocalDateTime date, String type) throws SQLException {
+        Connection connection = generateConnection();
+
         // TODO: Add validation for rows (cannot add two identical rows, the same date and so on)
         String sqlStm = "INSERT INTO reg values (?, ?, ?, ?);";
 
         PreparedStatement prepStmt = connection.prepareStatement(sqlStm);
-        prepStmt.setInt(1, userId);
+        prepStmt.setString(1, userId);
         prepStmt.setString(2, type);
         prepStmt.setFloat(3, value);
         prepStmt.setTimestamp(4, Timestamp.valueOf(date));
         prepStmt.executeUpdate();
     }
 
-    String getHash (String login) throws SQLException {
-        Connection connection;
+    boolean validateRegistration(String login) throws SQLException {
+        Connection connection = generateConnection();
+        Statement statement = null;
         try {
-            connection = generateConnection();
-        }
-        catch (SQLException e) {
-            throw new RuntimeException("Cannot connect to database, check if it exists and/or your password/login!");
+            statement = connection.createStatement();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
 
+        ResultSet resultSet = statement.executeQuery("select distinct(login) from auth;");
+
+        while (resultSet.next()) {
+            if (login.equals(resultSet.getString(1))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    void registerUser(String login, String hash) throws SQLException {
+        Connection connection = generateConnection();
+
+        String sqlStatement = "INSERT INTO auth VALUES (?, ?);";
+        PreparedStatement prepStmt = connection.prepareStatement(sqlStatement);
+        prepStmt.setString(1, login);
+        prepStmt.setString(2, hash);
+        prepStmt.executeUpdate();
+    }
+
+    String getHash (String login) throws SQLException {
+        Connection connection = generateConnection();
         Statement statement = connection.createStatement();
 
         ResultSet resultSet = statement.executeQuery("select * from auth where login=\""+login+"\";");
-//
-//        while (resultSet.next()) {
-//            System.out.println(resultSet.getString("hash"));
-//        }
+
         resultSet.next();
         return resultSet.getString("hash");
     }
 
-    private Connection generateConnection() throws SQLException {
+    private Connection generateConnection() {
 
-        return DriverManager.getConnection(url, user, password);
+        try {
+            return DriverManager.getConnection(url, user, password);
+        } catch (SQLException e) {
+            throw new RuntimeException(("Cannot connect to database, check if it exists and/or your password/login!"));
+        }
     }
 
 

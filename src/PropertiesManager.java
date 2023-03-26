@@ -47,4 +47,12 @@ class PropertiesManager {
     String getUrl() {
         return properties.getProperty("url") + properties.getProperty("DBName");
     }
+
+    boolean IfLoggedIn() {
+        return Boolean.parseBoolean(properties.getProperty("loggedIn"));
+    }
+
+    int userId() {
+        return Integer.parseInt(properties.getProperty("userId"));
+    }
 }
