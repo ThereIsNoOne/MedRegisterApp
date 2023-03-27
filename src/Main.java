@@ -2,9 +2,9 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
-// TODO: Add method to update current user (userId and loggedIn) in config.properties file.
 // TODO: Add getter for current user data.
 // TODO: Start working on GUI (finally).
+// REMINDER: Use JTable for GUI table.
 
 public class Main {
     public static void main(String[] args) throws IOException, SQLException, NoSuchAlgorithmException {
@@ -12,7 +12,10 @@ public class Main {
         DatabaseConnector connector = new DatabaseConnector();
 
         AuthorizationManager authManager = new AuthorizationManager();
-        authManager.authorizeUser("Szymon Stanislaw Lasota", "mySecurepassword");
+        PropertiesManager propertiesManager = new PropertiesManager("res/config.properties");
+//        propertiesManager.setUserId("Szymon Stanislaw Lasota");
+        propertiesManager.setLoggedIn(true);
+        authManager.authorizeUser("Szymon Stanislaw Lasota", "mySecurePassword");
     }
 
 }
