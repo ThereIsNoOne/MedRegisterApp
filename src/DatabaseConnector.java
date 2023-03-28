@@ -1,6 +1,5 @@
 import java.io.IOException;
 import java.sql.*;
-import java.time.LocalDateTime;
 
 class DatabaseConnector {
 
@@ -65,23 +64,63 @@ class DatabaseConnector {
         }
     }
 
-    void insertRow(String userId, float value, LocalDateTime date, String type) throws SQLException {
+    int getNumberOfRows(String login, String type) throws SQLException {
+        Connection connection = generateConnection();
+        Statement statement;
+        try {
+            statement = connection.createStatement();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        ResultSet resultSet = statement.executeQuery("select count(*) from reg where type=\""+type+"\" and login=\""+login+"\";");
+        resultSet.next();
+        return resultSet.getInt(1);
+    }
+
+    void insertRow(DataRecord dataRecord) throws SQLException {
         Connection connection = generateConnection();
 
         // TODO: Add validation for rows (cannot add two identical rows, the same date and so on)
         String sqlStm = "INSERT INTO reg values (?, ?, ?, ?);";
 
         PreparedStatement prepStmt = connection.prepareStatement(sqlStm);
-        prepStmt.setString(1, userId);
-        prepStmt.setString(2, type);
-        prepStmt.setFloat(3, value);
-        prepStmt.setTimestamp(4, Timestamp.valueOf(date));
+        prepStmt.setString(1, dataRecord.login);
+        prepStmt.setString(2, dataRecord.type);
+        prepStmt.setFloat(3, dataRecord.value);
+        prepStmt.setTimestamp(4, Timestamp.valueOf(dataRecord.date));
         prepStmt.executeUpdate();
+    }
+
+    DataRecord[] getDataRecords(String login, String type) throws SQLException {
+        int rowsNumber = getNumberOfRows(login, type);
+        int i = 0;
+        Connection connection = generateConnection();
+        Statement statement;
+        try {
+            statement = connection.createStatement();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        DataRecord[] data = new DataRecord[rowsNumber];
+
+        ResultSet resultSet = statement.executeQuery("select * from reg where type=\""+type+"\" and login=\""+login+"\";");
+        while (resultSet.next()) {
+            data[i] = new DataRecord(
+                    resultSet.getString(1),
+                    resultSet.getFloat(3),
+                    resultSet.getTimestamp(4).toLocalDateTime(),
+                    resultSet.getString(2)
+            );
+            i++;
+        }
+        return data;
     }
 
     boolean validateRegistration(String login) throws SQLException {
         Connection connection = generateConnection();
-        Statement statement = null;
+        Statement statement;
         try {
             statement = connection.createStatement();
         } catch (SQLException e) {
@@ -119,7 +158,6 @@ class DatabaseConnector {
     }
 
     private Connection generateConnection() {
-
         try {
             return DriverManager.getConnection(url, user, password);
         } catch (SQLException e) {

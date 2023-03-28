@@ -130,4 +130,32 @@ class PropertiesManager {
             throw new RuntimeException(e);
         }
     }
+
+    void setDatabaseInfo(String port, String dbUser, String dbPassword, String dbName, String dbPath) {
+        try {
+            closeInputStream();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            openOutputStream();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        properties.setProperty("url", "jdbc:mysql://localhost:"+port+"/");
+        properties.setProperty("DBName", dbName);
+        properties.setProperty("DBPassword", dbPassword);
+        properties.setProperty("DBPath","\""+dbPath);
+        properties.setProperty("DBUser", dbUser);
+        try {
+            properties.store(propertiesOutput, null);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            openInputStream();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
