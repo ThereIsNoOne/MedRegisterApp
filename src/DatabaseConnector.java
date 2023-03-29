@@ -39,8 +39,9 @@ class DatabaseConnector {
 
     void exportAuthDB() {
         String command = generateCommand(authName, authPath, Mode.EXPORT);
+//        System.out.println(command);
         try {
-            Runtime.getRuntime().exec("cmd /c "+command);
+            Runtime.getRuntime().exec("cmd /c start cmd.exe /K "+command);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

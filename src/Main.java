@@ -20,15 +20,16 @@ public class Main {
          * This is temporary method, to test for different users. You have to use mysql, on localhost and then provide your: port, dbUser, dbPassword, dbName and
          * path to bin dir for yours my sql server (for running some commands from mysql cli.
         */
+//        connector.exportRegDB();
+//        connector.exportAuthDB();
 
-        DataRecord[] data = dataManager.getDataRecords("blood pressure");;
-        System.out.println(Arrays.toString(data));
+//        DataRecord[] data = dataManager.getDataRecords("blood pressure");;
 
-//        connectToDatabase("3306", "root", "jkl123JKL!@#", "medreg", "C\\:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\");
-
-
+//        connectToDatabase("3306", "root", "jkl123JKL!@#", "medreg", "C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\");
 
 //        authManager.authorizeUser("Szymon Stanislaw Lasota", "mySecurePassword"); // do not change!
+        ConfigurationWindow configWindow = new ConfigurationWindow();
+
     }
 
     public static void connectToDatabase(String port, String dbUser, String dbPassword, String dbName, String dbPath) throws IOException {
