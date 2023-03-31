@@ -1,7 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
-// TODO: Change to grid layout manager.
+// TODO: Add verification to database info (probably in different class?)
 
 public class ConfigurationWindow extends JFrame {
 
@@ -111,6 +112,8 @@ public class ConfigurationWindow extends JFrame {
     }
 
     private void confirmDB () {
+        // connectToDatabase("3306", "root", "jkl123JKL!@#", "medreg", "C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\");
+
         System.out.printf(
                 "Port: %s\nUser: %s\nPassword: %s\nDBName: %s\nDBPath: %s%n",
                 serverPortEntry.getText(),
@@ -119,6 +122,26 @@ public class ConfigurationWindow extends JFrame {
                 databaseNameEntry.getText(),
                 databasePathEntry.getText()
                 );
+        PropertiesManager propertiesManager;
+        try {
+            propertiesManager = new PropertiesManager("res/config.properties");
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Properties file not found, check if it exists in res/ directory",
+                    "Fatal error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+            return;
+        }
+        propertiesManager.setDatabaseInfo(
+                serverPortEntry.getText(),
+                serverUserEntry.getText(),
+                serverPasswordEntry.getText(),
+                databaseNameEntry.getText(),
+                databasePathEntry.getText()
+        );
+        // Here goes verification.
 //        this.dispose();
     }
 }
