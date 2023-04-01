@@ -93,6 +93,17 @@ class DatabaseConnector {
         prepStmt.executeUpdate();
     }
 
+    void testConfiguration () throws SQLException {
+        Connection connection = generateConnection();
+
+        Statement statement = connection.createStatement();
+
+
+        ResultSet resultSet = statement.executeQuery("select * from auth;");
+        resultSet.next();
+        resultSet.getString(1);
+    }
+
     DataRecord[] getDataRecords(String login, String type) throws SQLException {
         int rowsNumber = getNumberOfRows(login, type);
         int i = 0;

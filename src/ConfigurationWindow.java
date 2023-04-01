@@ -141,6 +141,13 @@ public class ConfigurationWindow extends JFrame {
                 databaseNameEntry.getText(),
                 databasePathEntry.getText()
         );
+
+        try {
+            DatabaseConnector connector = new DatabaseConnector();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
         // Here goes verification.
 //        this.dispose();
     }
