@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.sql.*;
+import java.util.concurrent.TimeUnit;
 
 class DatabaseConnector {
 
@@ -62,6 +63,53 @@ class DatabaseConnector {
             Runtime.getRuntime().exec("cmd /c "+command);
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    private void exportTest(String testName, String testPath) throws IOException {
+        String command = generateCommand(testName, testPath, Mode.EXPORT);
+        Runtime.getRuntime().exec("cmd /c "+command);
+
+    }
+
+    private void importTest(String testName, String testPath) throws IOException {
+        String command = generateCommand(testName, testPath, Mode.IMPORT);
+        Runtime.getRuntime().exec("cmd /c "+command);
+    }
+
+    private int getTestValues() throws SQLException {
+        Connection connection = generateConnection();
+        Statement statement;
+        try {
+            statement = connection.createStatement();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        ResultSet resultSet = statement.executeQuery("select count(*) from test;");
+        resultSet.next();
+        return resultSet.getInt(1);
+    }
+
+    private void writeTestValues() throws SQLException {
+        Connection connection = generateConnection();
+
+        String sqlStmt = "insert into test values (?, ?)";
+
+        PreparedStatement prepStmt = connection.prepareStatement(sqlStmt);
+        prepStmt.setString(1, "test");
+        prepStmt.setString(2, "pass");
+        prepStmt.executeUpdate();
+    }
+
+    void testConnection (String testName, String testPath) throws IOException, SQLException, InterruptedException {
+        exportTest(testName, testPath);
+        writeTestValues();
+        int beforeImport = getTestValues();
+        importTest(testName, testPath);
+        TimeUnit.SECONDS.sleep(1); // Time needed to update a database (I think it will have to stay this way) :(
+        if (getTestValues() != beforeImport) {
+            throw new IOException("Table was not updated!");
         }
     }
 

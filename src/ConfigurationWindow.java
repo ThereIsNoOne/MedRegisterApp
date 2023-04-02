@@ -1,8 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
-
-// TODO: Add verification to database info (probably in different class?)
+import java.sql.SQLException;
 
 public class ConfigurationWindow extends JFrame {
 
@@ -112,16 +111,8 @@ public class ConfigurationWindow extends JFrame {
     }
 
     private void confirmDB () {
-        // connectToDatabase("3306", "root", "jkl123JKL!@#", "medreg", "C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\");
+        // connectToDatabase("3306", "root", "jkl123JKL!@#", "medreg", "C:\Program Files\MySQL\MySQL Server 8.0\bin\");
 
-        System.out.printf(
-                "Port: %s\nUser: %s\nPassword: %s\nDBName: %s\nDBPath: %s%n",
-                serverPortEntry.getText(),
-                serverUserEntry.getText(),
-                serverPasswordEntry.getText(),
-                databaseNameEntry.getText(),
-                databasePathEntry.getText()
-                );
         PropertiesManager propertiesManager;
         try {
             propertiesManager = new PropertiesManager("res/config.properties");
@@ -142,13 +133,26 @@ public class ConfigurationWindow extends JFrame {
                 databasePathEntry.getText()
         );
 
+        DatabaseConnector connector;
         try {
-            DatabaseConnector connector = new DatabaseConnector();
+            connector = new DatabaseConnector();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-        // Here goes verification.
-//        this.dispose();
+        try {
+            String testPath = "SQL/test.sq;";
+            String testName = "test";
+            connector.testConnection(testName, testPath);
+        } catch (IOException | SQLException | InterruptedException |RuntimeException e) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Something went wrong, check all information you provided, if it does not work, then we have big problem :(",
+                    "Fatal error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+            return;
+        }
+        System.out.println("Everything is ok!");
+        this.dispose();
     }
 }

@@ -1,8 +1,8 @@
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
+import java.util.Arrays;
 
-// TODO: Add README file! IMPORTANT
 // TODO: Add getter for current user data.
 // TODO: Finish Configuration window
 // TODO: Start working on Login/Register window
@@ -12,19 +12,20 @@ import java.sql.SQLException;
 // REMINDER: Use JTable for GUI table.
 
 public class Main {
-    public static void main(String[] args) throws IOException, SQLException, NoSuchAlgorithmException {
+    public static void main(String[] args) throws IOException, SQLException, NoSuchAlgorithmException, InterruptedException {
 
         // Temporary test area
 
-        DatabaseConnector connector = new DatabaseConnector();
-        AuthorizationManager authManager = new AuthorizationManager();
-        PropertiesManager propertiesManager = new PropertiesManager("res/config.properties");
-        DataManager dataManager = new DataManager("admin");
+//        DatabaseConnector connector = new DatabaseConnector();
+//        AuthorizationManager authManager = new AuthorizationManager();
+//        PropertiesManager propertiesManager = new PropertiesManager("res/config.properties");
+//        DataManager dataManager = new DataManager("admin");
 
 //        connector.exportRegDB();
 //        connector.exportAuthDB();
 
-//        DataRecord[] data = dataManager.getDataRecords("blood pressure");;
+//        DataRecord[] data = dataManager.getDataRecords("temperature");
+//        System.out.println(Arrays.toString(data));
 
 
 //        authManager.authorizeUser("Szymon Stanislaw Lasota", "mySecurePassword"); // do not change!
