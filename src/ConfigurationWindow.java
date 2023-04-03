@@ -152,7 +152,7 @@ public class ConfigurationWindow extends JFrame {
             throw new RuntimeException(e);
         }
         try {
-            String testPath = "SQL/test.sq;";
+            String testPath = "SQL/test.sql";
             String testName = "test";
             connector.testConnection(testName, testPath);
         } catch (IOException | SQLException | InterruptedException |RuntimeException e) {
