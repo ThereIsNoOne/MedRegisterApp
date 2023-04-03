@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -22,7 +23,7 @@ public class ConfigurationWindow extends JFrame {
 
         this.getContentPane().setBackground(new Color(0x0));
         drawLabels();
-        drawButton();
+        drawButtons();
         drawEntries();
         this.setVisible(true);
     }
@@ -68,7 +69,7 @@ public class ConfigurationWindow extends JFrame {
         this.add(mysqlPath, constraints);
     }
 
-    private void drawButton () {
+    private void drawButtons() {
         JButton confirmButton = new JButton();
         confirmButton.setFont(new Font("Inter", Font.PLAIN, 12));
         confirmButton.setText("Confirm");
@@ -79,6 +80,17 @@ public class ConfigurationWindow extends JFrame {
         constraints.gridy = 10;
         constraints.gridx = 1;
         this.add(confirmButton, constraints);
+
+        JButton openDBPath = new JButton();
+        openDBPath.setFont(new Font("Inter", Font.PLAIN, 12));
+        openDBPath.setText("Open");
+        openDBPath.setBackground(new Color(0x606060));
+        openDBPath.setForeground(new Color(0xdddddd));
+        openDBPath.addActionListener(e -> openPathChooser());
+        openDBPath.setFocusable(false);
+        constraints.gridy = 9;
+        constraints.gridx = 1;
+        this.add(openDBPath, constraints);
     }
 
     private void drawEntries() {
@@ -88,7 +100,7 @@ public class ConfigurationWindow extends JFrame {
         serverUserEntry = new JTextField();
         setupEntry(serverUserEntry, 3);
 
-        serverPasswordEntry = new JTextField();
+        serverPasswordEntry = new JPasswordField();
         setupEntry(serverPasswordEntry, 5);
 
         databaseNameEntry = new JTextField();
@@ -153,6 +165,17 @@ public class ConfigurationWindow extends JFrame {
             return;
         }
         System.out.println("Everything is ok!");
+        new LoginWindow();
         this.dispose();
+    }
+
+    private void openPathChooser() {
+        JFileChooser chooser = new JFileChooser("c:");
+        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        int response = chooser.showOpenDialog(this);
+        if (response == JFileChooser.APPROVE_OPTION) {
+            databasePathEntry.setText(chooser.getSelectedFile().getAbsolutePath());
+        }
+
     }
 }

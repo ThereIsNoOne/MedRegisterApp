@@ -29,7 +29,8 @@ public class Main {
 
 
 //        authManager.authorizeUser("Szymon Stanislaw Lasota", "mySecurePassword"); // do not change!
-        ConfigurationWindow configWindow = new ConfigurationWindow();
+        new ConfigurationWindow();
+//        new LoginWindow();
 
     }
 
