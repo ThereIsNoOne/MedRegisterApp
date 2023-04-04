@@ -10,7 +10,7 @@ public class ConfigurationWindow extends JFrame {
 
     private JTextField serverPortEntry;
     private JTextField serverUserEntry;
-    private JTextField serverPasswordEntry;
+    private JPasswordField serverPasswordEntry;
     private JTextField databaseNameEntry;
     private JTextField databasePathEntry;
 
@@ -26,10 +26,10 @@ public class ConfigurationWindow extends JFrame {
         drawButtons();
         drawEntries();
         this.setVisible(true);
+        constraints.insets = new Insets(5, 10, 5, 10);
     }
 
     private void drawLabels() {
-        constraints.insets = new Insets(5, 10, 5, 10);
         constraints.weightx = 1.0;
         constraints.fill = GridBagConstraints.HORIZONTAL;
         Label serverPortLabel = new Label();
@@ -61,7 +61,7 @@ public class ConfigurationWindow extends JFrame {
         constraints.gridy = 6;
         this.add(databaseNameLabel, constraints);
 
-        Label mysqlPath = new Label();
+        Label mysqlPath = new Label(); ;
         mysqlPath.setText("Enter path to your mysql bin directory:");
         mysqlPath.setForeground(new Color(0xaaaaaa));
         mysqlPath.setFont(new Font("Inter", Font.PLAIN, 16));
