@@ -70,7 +70,11 @@ class PropertiesManager {
         return properties.getProperty("url") + properties.getProperty("DBName");
     }
 
-    boolean IfLoggedIn() {
+    boolean ifConfigured() {
+        return Boolean.parseBoolean(properties.getProperty("configured"));
+    }
+
+    boolean ifLoggedIn() {
         return Boolean.parseBoolean(properties.getProperty("loggedIn"));
     }
 
@@ -102,6 +106,30 @@ class PropertiesManager {
         }
     }
 
+    void setConfigured(boolean configured) {
+        try {
+            closeInputStream();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            openOutputStream();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        properties.setProperty("configured", Boolean.toString(configured));
+        try {
+            properties.store(propertiesOutput, null);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            openInputStream();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     void setLoggedIn(boolean loggedIn) {
         try {
             closeInputStream();
@@ -113,12 +141,7 @@ class PropertiesManager {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        if (loggedIn) {
-            properties.setProperty("loggedIn", "true");
-        }
-        else {
-            properties.setProperty("loggedIn", "false");
-        }
+        properties.setProperty("loggedIn", Boolean.toString(loggedIn));
         try {
             properties.store(propertiesOutput, null);
         } catch (IOException e) {

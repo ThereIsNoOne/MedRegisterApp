@@ -1,5 +1,4 @@
 import javax.swing.*;
-import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -20,107 +19,83 @@ public class ConfigurationWindow extends JFrame {
         this.setResizable(false);
         this.setSize(700, 420);
         this.setLayout(new GridBagLayout());
-
         this.getContentPane().setBackground(new Color(0x0));
+
+        constraints.fill = GridBagConstraints.NONE;
+        constraints.insets = new Insets(5, 75, 5, 75);
+        constraints.weightx = 1;
+
         drawLabels();
         drawButtons();
         drawEntries();
         this.setVisible(true);
-        constraints.insets = new Insets(5, 10, 5, 10);
     }
 
     private void drawLabels() {
-        constraints.weightx = 1.0;
-        constraints.fill = GridBagConstraints.HORIZONTAL;
-        Label serverPortLabel = new Label();
+        constraints.gridwidth = 3;
+        constraints.weightx = 2;
+        JLabel serverPortLabel = new JLabel();
         serverPortLabel.setText("Enter port for your mysql server:");
-        serverPortLabel.setForeground(new Color(0xaaaaaa));
-        serverPortLabel.setFont(new Font("Inter", Font.PLAIN, 16));
-        constraints.gridy = 0;
-        constraints.gridx = 0;
-        this.add(serverPortLabel, constraints);
+        SetUpUtils.setUpLabel(this, serverPortLabel, 0, 0, constraints);
 
-        Label serverUserLabel = new Label();
+        JLabel serverUserLabel = new JLabel();
         serverUserLabel.setText("Enter username for your mysql server:");
-        serverUserLabel.setForeground(new Color(0xaaaaaa));
-        serverUserLabel.setFont(new Font("Inter", Font.PLAIN,16));
-        constraints.gridy = 2;
-        this.add(serverUserLabel, constraints);
+        SetUpUtils.setUpLabel(this, serverUserLabel, 0, 2, constraints);
 
-        Label serverPasswordLabel = new Label();
+        JLabel serverPasswordLabel = new JLabel();
         serverPasswordLabel.setText("Enter password for your mysql server:");
-        serverPasswordLabel.setForeground(new Color(0xaaaaaa));
-        serverPasswordLabel.setFont(new Font("Inter", Font.PLAIN, 16));
-        constraints.gridy = 4;
-        this.add(serverPasswordLabel, constraints);
+        SetUpUtils.setUpLabel(this, serverPasswordLabel, 0, 4, constraints);
 
-        Label databaseNameLabel = new Label();
+        JLabel databaseNameLabel = new JLabel();
         databaseNameLabel.setText("Enter your database name:");
-        databaseNameLabel.setForeground(new Color(0xaaaaaa));
-        databaseNameLabel.setFont(new Font("Inter", Font.PLAIN, 16));
-        constraints.gridy = 6;
-        this.add(databaseNameLabel, constraints);
+        SetUpUtils.setUpLabel(this, databaseNameLabel, 0, 6, constraints);
 
-        Label mysqlPath = new Label(); ;
+        JLabel mysqlPath = new JLabel(); ;
         mysqlPath.setText("Enter path to your mysql bin directory:");
-        mysqlPath.setForeground(new Color(0xaaaaaa));
-        mysqlPath.setFont(new Font("Inter", Font.PLAIN, 16));
-        constraints.gridy = 8;
-        this.add(mysqlPath, constraints);
+        SetUpUtils.setUpLabel(this, mysqlPath, 0, 8, constraints);
+
+        constraints.gridwidth = 1;
+        constraints.weightx = 1;
     }
 
     private void drawButtons() {
         JButton confirmButton = new JButton();
-        confirmButton.setFont(new Font("Inter", Font.PLAIN, 12));
         confirmButton.setText("Confirm");
-        confirmButton.setBackground(new Color(0x606060));
-        confirmButton.setForeground(new Color(0xdddddd));
         confirmButton.addActionListener(e -> confirmDB());
-        confirmButton.setFocusable(false);
-        constraints.gridy = 10;
-        constraints.gridx = 1;
-        this.add(confirmButton, constraints);
+        SetUpUtils.setUpButton(this, confirmButton, 1, 10, constraints);
 
         JButton openDBPath = new JButton();
-        openDBPath.setFont(new Font("Inter", Font.PLAIN, 12));
         openDBPath.setText("Open");
-        openDBPath.setBackground(new Color(0x606060));
-        openDBPath.setForeground(new Color(0xdddddd));
         openDBPath.addActionListener(e -> openPathChooser());
-        openDBPath.setFocusable(false);
-        constraints.gridy = 9;
-        constraints.gridx = 1;
-        this.add(openDBPath, constraints);
+        SetUpUtils.setUpButton(this, openDBPath, 2, 9, constraints);
     }
 
     private void drawEntries() {
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.gridwidth = 3;
+        constraints.weightx = 2;
+
         serverPortEntry = new JTextField();
-        setupEntry(serverPortEntry, 1);
+        SetUpUtils.setUpEntry(this, serverPortEntry, 0, 1, constraints);
 
         serverUserEntry = new JTextField();
-        setupEntry(serverUserEntry, 3);
+        SetUpUtils.setUpEntry(this, serverUserEntry, 0, 3, constraints);
 
         serverPasswordEntry = new JPasswordField();
-        setupEntry(serverPasswordEntry, 5);
+        SetUpUtils.setUpEntry(this, serverPasswordEntry, 0, 5, constraints);
 
         databaseNameEntry = new JTextField();
-        setupEntry(databaseNameEntry, 7);
+        SetUpUtils.setUpEntry(this, databaseNameEntry, 0, 7, constraints);
 
+        constraints.gridwidth = 2;
         databasePathEntry = new JTextField();
-        setupEntry(databasePathEntry, 9);
+        SetUpUtils.setUpEntry(this, databasePathEntry, 0, 9, constraints);
 
+        constraints.weightx = 1;
+        constraints.gridwidth = 1;
+        constraints.fill = GridBagConstraints.NONE;
     }
 
-    private void setupEntry(JTextField text, int gridy) {
-        text.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 14));
-        text.setForeground(new Color(0xffffff));
-        text.setBackground(new Color(0x707070));
-        text.setCaretColor(new Color(0xffffff));
-        text.setBorder(BorderFactory.createEmptyBorder());
-        constraints.gridx = 0;
-        constraints.gridy = gridy;
-        this.add(text, constraints);
-    }
 
     private void confirmDB () {
         // connectToDatabase("3306", "root", "jkl123JKL!@#", "medreg", "C:\Program Files\MySQL\MySQL Server 8.0\bin\");
@@ -140,7 +115,7 @@ public class ConfigurationWindow extends JFrame {
         propertiesManager.setDatabaseInfo(
                 serverPortEntry.getText(),
                 serverUserEntry.getText(),
-                serverPasswordEntry.getText(),
+                SetUpUtils.readPassword(serverPasswordEntry),
                 databaseNameEntry.getText(),
                 databasePathEntry.getText()
         );
@@ -162,8 +137,10 @@ public class ConfigurationWindow extends JFrame {
                     "Fatal error",
                     JOptionPane.ERROR_MESSAGE
             );
+            propertiesManager.setConfigured(false);
             return;
         }
+        propertiesManager.setConfigured(true);
         System.out.println("Everything is ok!");
         new LoginWindow();
         this.dispose();

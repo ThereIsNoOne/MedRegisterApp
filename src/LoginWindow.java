@@ -2,7 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
+
+// TODO: Add checkbox "remember me"
 
 public class LoginWindow extends JFrame {
 
@@ -20,7 +21,7 @@ public class LoginWindow extends JFrame {
         this.getContentPane().setBackground(new Color(0x0));
 
         constraints.fill = GridBagConstraints.NONE;
-        constraints.insets = new Insets(15, 25, 15, 25);
+        constraints.insets = new Insets(15, 75, 15, 75);
         constraints.weightx = 1;
         drawButtons();
         drawEntries();
@@ -33,21 +34,13 @@ public class LoginWindow extends JFrame {
         constraints.gridwidth = 2;
         constraints.weightx = 2;
 
-        Label loginLabel = new Label();
+        JLabel loginLabel = new JLabel();
         loginLabel.setText("Enter login");
-        loginLabel.setFont(new Font("Inter", Font.PLAIN, 16));
-        loginLabel.setForeground(new Color(0xffffff));
-        constraints.gridy = 0;
-        constraints.gridx = 0;
-        this.add(loginLabel, constraints);
+        SetUpUtils.setUpLabel(this, loginLabel, 0, 0, constraints);
 
-        Label passwordLabel = new Label();
+        JLabel passwordLabel = new JLabel();
         passwordLabel.setText("Enter password");
-        passwordLabel.setFont(new Font("Inter", Font.PLAIN, 16));
-        passwordLabel.setForeground(new Color(0xffffff));
-        constraints.gridy = 2;
-        constraints.gridx = 0;
-        this.add(passwordLabel, constraints);
+        SetUpUtils.setUpLabel(this, passwordLabel, 0, 2, constraints);
 
         constraints.gridwidth = 1;
         constraints.weightx = 1;
@@ -56,55 +49,34 @@ public class LoginWindow extends JFrame {
     private void drawEntries() {
 
         constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.gridwidth = 2;
+        constraints.weightx = 2;
 
         loginEntry = new JTextField();
-        setUpEntry(loginEntry, 1);
+        SetUpUtils.setUpEntry(this, loginEntry, 0, 1, constraints);
 
         passwordEntry = new JPasswordField();
-        setUpEntry(passwordEntry, 3);
+        SetUpUtils.setUpEntry(this, passwordEntry, 0, 3, constraints);
 
         constraints.weightx = 1;
         constraints.gridwidth = 1;
-
         constraints.fill = GridBagConstraints.NONE;
     }
 
-    private void setUpEntry(JTextField text, int gridy) {
-        text.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 14));
-        text.setForeground(new Color(0xffffff));
-        text.setBackground(new Color(0x707070));
-        text.setCaretColor(new Color(0xffffff));
-        text.setBorder(BorderFactory.createEmptyBorder());
-        constraints.gridwidth = 2;
-        constraints.weightx = 2;
-        constraints.gridx = 0;
-        constraints.gridy = gridy;
-        this.add(text, constraints);
-    }
 
     private void drawButtons() {
 
         JButton confirmButton = new JButton();
-        confirmButton.setFont(new Font("Inter", Font.PLAIN, 12));
-        confirmButton.setText("Confirm");
+        confirmButton.setText("Login");
         confirmButton.addActionListener(e -> authorizeUser());
-        setUpButtons(confirmButton, 0);
+        SetUpUtils.setUpButton(this, confirmButton, 0, 4, constraints);
 
-        JButton registerButton = new JButton("Register");
-        registerButton.setFont(new Font("Inter", Font.PLAIN, 12));
+        JButton registerButton = new JButton("Don't have an account?");
         registerButton.addActionListener(e -> openRegisterWindow());
-        setUpButtons(registerButton, 1);
+        SetUpUtils.setUpButton(this, registerButton, 1, 4, constraints);
 
     }
 
-    private void setUpButtons(JButton button, int gridx) {
-        button.setBackground(new Color(0x606060));
-        button.setForeground(new Color(0xdddddd));
-        button.setFocusable(false);
-        constraints.gridy = 4;
-        constraints.gridx = gridx;
-        this.add(button, constraints);
-    }
 
     private void openRegisterWindow() {
         new RegisterWindow();
@@ -131,7 +103,7 @@ public class LoginWindow extends JFrame {
 
         boolean authorized;
         try {
-            authorized = manager.authorizeUser(loginEntry.getText(),  readPassword());
+            authorized = manager.authorizeUser(loginEntry.getText(),  SetUpUtils.readPassword(passwordEntry));
         } catch (AuthorizationException e) {
             authorized = false;
         }
@@ -166,16 +138,6 @@ public class LoginWindow extends JFrame {
                 "Authorization Failed",
                 JOptionPane.ERROR_MESSAGE
         );
-
-
     }
 
-    private String readPassword() {
-        StringBuilder password = new StringBuilder();
-        for (char c: passwordEntry.getPassword()) {
-            password.append(c);
-        }
-        return password.toString();
-
-    }
 }

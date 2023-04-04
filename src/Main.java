@@ -1,10 +1,8 @@
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
-import java.util.Arrays;
 
 // TODO: Add getter for current user data.
-// TODO: Finish Configuration window
 // TODO: Start working on Login/Register window
 // TODO: Start working on main window
 // TODO: Create class responsible for drawing plots (in main window)
@@ -30,7 +28,29 @@ public class Main {
 
 //        authManager.authorizeUser("Szymon Stanislaw Lasota", "mySecurePassword"); // do not change!
 //        new ConfigurationWindow();
-        new LoginWindow();
+//        new LoginWindow();
+        run();
+
+    }
+
+    private static void run() {
+        PropertiesManager propertiesManager;
+        try {
+            propertiesManager = new PropertiesManager("res/config.properties");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        if (!propertiesManager.ifConfigured()) {
+            new ConfigurationWindow();
+        }
+        else if (propertiesManager.ifLoggedIn()){
+            // Here goes main window
+        }
+        else {
+            new LoginWindow();
+        }
+
+
 
     }
 
