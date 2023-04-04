@@ -92,7 +92,7 @@ public class LoginWindow extends JFrame {
 
         JButton registerButton = new JButton("Register");
         registerButton.setFont(new Font("Inter", Font.PLAIN, 12));
-        confirmButton.addActionListener(e -> openRegisterWindow());
+        registerButton.addActionListener(e -> openRegisterWindow());
         setUpButtons(registerButton, 1);
 
     }
@@ -107,7 +107,8 @@ public class LoginWindow extends JFrame {
     }
 
     private void openRegisterWindow() {
-
+        new RegisterWindow();
+        this.dispose();
     }
 
     private void authorizeUser() {
@@ -125,33 +126,47 @@ public class LoginWindow extends JFrame {
                     JOptionPane.ERROR_MESSAGE
             );
         }
+
         assert manager != null;
 
-        if (manager.authorizeUser(loginEntry.getText(),  readPassword())) {
-            PropertiesManager propertiesManager = null;
-            try {
-                propertiesManager = new PropertiesManager("res/config.properties");
-            } catch (IOException e) {
-                JOptionPane.showMessageDialog(
-                        this,
-                        e.getMessage(),
-                        "Fatal Error",
-                        JOptionPane.ERROR_MESSAGE
-                );
-            }
-            assert propertiesManager != null;
+        boolean authorized;
+        try {
+            authorized = manager.authorizeUser(loginEntry.getText(),  readPassword());
+        } catch (AuthorizationException e) {
+            authorized = false;
+        }
+
+        PropertiesManager propertiesManager = null;
+        try {
+            propertiesManager = new PropertiesManager("res/config.properties");
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    e.getMessage(),
+                    "Fatal Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        }
+
+        assert propertiesManager != null;
+        if (authorized) {
             propertiesManager.setUserId(loginEntry.getText());
             propertiesManager.setLoggedIn(true);
             System.out.println("Ok");
             // Here goes main window
+            this.dispose();
             return;
         }
+
+        propertiesManager.setUserId("null");
+        propertiesManager.setLoggedIn(false);
         JOptionPane.showMessageDialog(
                 this,
                 "Cannot authorize, check password and login, then try again.",
                 "Authorization Failed",
                 JOptionPane.ERROR_MESSAGE
         );
+
 
     }
 

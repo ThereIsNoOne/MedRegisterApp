@@ -25,7 +25,7 @@ public class AuthorizationManager {
         }
     }
 
-    public boolean authorizeUser (String login, String password) {
+    public boolean authorizeUser (String login, String password) throws AuthorizationException {
         byte[] bytes = msgDigest.digest((password + salt).getBytes());
         String hash = bytesToHex(bytes);
         String hashToCompare;

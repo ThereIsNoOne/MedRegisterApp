@@ -190,7 +190,7 @@ class DatabaseConnector {
         ResultSet resultSet = statement.executeQuery("select distinct(login) from auth;");
 
         while (resultSet.next()) {
-            if (login.equals(resultSet.getString(1))) {
+            if (login.equals(resultSet.getString(1)) || login.equals("null")) {
                 return false;
             }
         }
@@ -207,14 +207,18 @@ class DatabaseConnector {
         prepStmt.executeUpdate();
     }
 
-    String getHash (String login) throws SQLException {
+    String getHash (String login) throws SQLException, AuthorizationException {
         Connection connection = generateConnection();
         Statement statement = connection.createStatement();
 
         ResultSet resultSet = statement.executeQuery("select * from auth where login=\""+login+"\";");
-
         resultSet.next();
-        return resultSet.getString("hash");
+        try {
+            return resultSet.getString("hash");
+        }
+        catch (SQLException e) {
+            throw new AuthorizationException(e);
+        }
     }
 
     private Connection generateConnection() {
