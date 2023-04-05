@@ -104,10 +104,13 @@ class DatabaseConnector {
 
     void testConnection (String testName, String testPath) throws IOException, SQLException, InterruptedException {
         exportTest(testName, testPath);
-        writeTestValues();
+        TimeUnit.SECONDS.sleep(1);
         int beforeImport = getTestValues();
+        writeTestValues();
+        System.out.println(beforeImport);
         importTest(testName, testPath);
         TimeUnit.SECONDS.sleep(1); // Time needed to update a database (I think it will have to stay this way) :(
+        System.out.println(getTestValues());
         if (getTestValues() != beforeImport) {
             throw new IOException("Table was not updated!");
         }

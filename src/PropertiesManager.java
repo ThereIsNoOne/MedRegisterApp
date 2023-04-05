@@ -47,7 +47,7 @@ class PropertiesManager {
     }
 
     String getDBPath() {
-        return properties.getProperty("DBPath");
+        return properties.getProperty("DBPath") + "\\";
     }
 
     String getAuthName() {

@@ -3,6 +3,7 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
 // TODO: Add getter for current user data.
+// TODO: Add documentation
 // TODO: Start working on Login/Register window
 // TODO: Start working on main window
 // TODO: Create class responsible for drawing plots (in main window)
@@ -14,7 +15,7 @@ public class Main {
 
         // Temporary test area
 
-//        DatabaseConnector connector = new DatabaseConnector();
+        DatabaseConnector connector = new DatabaseConnector();
 //        AuthorizationManager authManager = new AuthorizationManager();
 //        PropertiesManager propertiesManager = new PropertiesManager("res/config.properties");
 //        DataManager dataManager = new DataManager("admin");
@@ -27,9 +28,9 @@ public class Main {
 
 
 //        authManager.authorizeUser("Szymon Stanislaw Lasota", "mySecurePassword"); // do not change!
-//        new ConfigurationWindow();
+        new ConfigurationWindow();
 //        new LoginWindow();
-        run();
+//        run();
 
     }
 
@@ -45,6 +46,7 @@ public class Main {
         }
         else if (propertiesManager.ifLoggedIn()){
             // Here goes main window
+            new LoginWindow(); // For test purposes
         }
         else {
             new LoginWindow();

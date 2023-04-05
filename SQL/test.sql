@@ -34,7 +34,7 @@ CREATE TABLE `test` (
 
 LOCK TABLES `test` WRITE;
 /*!40000 ALTER TABLE `test` DISABLE KEYS */;
-INSERT INTO `test` (`login`, `password`) VALUES ('__TESTER__','__PASSWORD__'),('test','pass');
+INSERT INTO `test` (`login`, `password`) VALUES ('__TESTER__','__PASSWORD__');
 /*!40000 ALTER TABLE `test` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -47,4 +47,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-04-02 22:04:14
+-- Dump completed on 2023-04-05 11:09:07

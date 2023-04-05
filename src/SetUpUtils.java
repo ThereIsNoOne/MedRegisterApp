@@ -6,7 +6,7 @@ public class SetUpUtils {
     static void setUpEntry(JFrame frame, JTextField text, int x, int y, GridBagConstraints constraints) {
         text.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 14));
         text.setForeground(new Color(0xffffff));
-        text.setBackground(new Color(0x707070));
+        text.setBackground(new Color(0x202020));
         text.setCaretColor(new Color(0xffffff));
         text.setBorder(BorderFactory.createEmptyBorder());
         constraints.gridx = x;
