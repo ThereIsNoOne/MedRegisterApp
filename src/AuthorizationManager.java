@@ -14,7 +14,7 @@ public class AuthorizationManager {
         this.dbConnector = new DatabaseConnector();
     }
 
-    public void registerUser(String login, String password) throws SQLException {
+    public void registerUser(String login, String password) throws SQLException, IllegalArgumentException {
         if (dbConnector.validateRegistration(login)) {
             byte[] bytes = msgDigest.digest((password + salt).getBytes());
             String hash = bytesToHex(bytes);

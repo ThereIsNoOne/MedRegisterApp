@@ -28,8 +28,8 @@ public class Main {
 
 
 //        authManager.authorizeUser("Szymon Stanislaw Lasota", "mySecurePassword"); // do not change!
-        new ConfigurationWindow();
-//        new LoginWindow();
+//        new ConfigurationWindow();
+        new LoginWindow();
 //        run();
 
     }

@@ -1,5 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
 
 public class RegisterWindow extends JFrame {
 
@@ -81,11 +84,66 @@ public class RegisterWindow extends JFrame {
     }
 
     private void confirmRegistration() {
-        System.out.printf(
-                "Login: %s\nPassword: %s, repeat: %s",
-                loginEntry.getText(),
-                passwordEntry.getText(),
-                repeatPassword.getText()
+        AuthorizationManager manager;
+        try {
+            manager = new AuthorizationManager();
+        } catch (NoSuchAlgorithmException | IOException e) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Problem when connecting to database.",
+                    "Fatal error!",
+                    JOptionPane.ERROR_MESSAGE
+            );
+            return;
+        }
+        String password = SetUpUtils.readPassword(passwordEntry);
+        String repeatedPassword = SetUpUtils.readPassword(repeatPassword);
+
+        if (password.length() == 0) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Password field cannot be empty!",
+                    "Register error!",
+                    JOptionPane.ERROR_MESSAGE
+            );
+            return;
+        }
+
+        if (password.equals(repeatedPassword)) {
+            try {
+                manager.registerUser(loginEntry.getText(), password);
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Problem when connecting to database.",
+                        "Fatal error!",
+                        JOptionPane.ERROR_MESSAGE
+                );
+                return;
+            } catch (IllegalArgumentException e) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Login already used, try again with different one.",
+                        "Regiter error",
+                        JOptionPane.ERROR_MESSAGE
+                );
+                return;
+            }
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Successfully registered.",
+                    "Success",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+            new LoginWindow();
+            this.dispose();
+            return;
+        }
+        JOptionPane.showMessageDialog(
+                this,
+                "Password and repeat password fields are different, check if they are the same, then try again.",
+                "Regiter error",
+                JOptionPane.ERROR_MESSAGE
         );
     }
 
