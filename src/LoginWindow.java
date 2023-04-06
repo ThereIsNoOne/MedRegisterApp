@@ -125,7 +125,7 @@ public class LoginWindow extends JFrame {
             propertiesManager.setUserId(loginEntry.getText());
             propertiesManager.setLoggedIn(true);
             System.out.println("Ok");
-            // Here goes main window
+            new MainWindow();
             this.dispose();
             return;
         }

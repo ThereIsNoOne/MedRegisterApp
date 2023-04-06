@@ -29,8 +29,8 @@ public class Main {
 
 //        authManager.authorizeUser("Szymon Stanislaw Lasota", "mySecurePassword"); // do not change!
 //        new ConfigurationWindow();
-        new LoginWindow();
-//        run();
+//        new LoginWindow();
+        run();
 
     }
 
@@ -45,8 +45,7 @@ public class Main {
             new ConfigurationWindow();
         }
         else if (propertiesManager.ifLoggedIn()){
-            // Here goes main window
-            new LoginWindow(); // For test purposes
+            new MainWindow();
         }
         else {
             new LoginWindow();
