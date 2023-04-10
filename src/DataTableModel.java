@@ -1,8 +1,25 @@
 import javax.swing.table.AbstractTableModel;
+import java.io.IOException;
 
 public class DataTableModel extends AbstractTableModel {
-    private String[] columnNames = {"login", "type", "value", "register_time"};
-    private Object[][] data = {{"admin", "temperature", 36.6f, "Date"}};
+    private final String[] columnNames = {"login", "type", "value", "register_time"};
+    private Object[][] data;
+
+    DataTableModel(String type) {
+        setData(type);
+    }
+
+    void setData(String type) {
+        DataManager manager;
+        try {
+            manager = new DataManager();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        data = manager.getTableRows(type);
+    }
+
+
 
     @Override
     public String getColumnName(int columnIndex) {

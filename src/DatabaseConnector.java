@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 class DatabaseConnector {
@@ -198,6 +199,22 @@ class DatabaseConnector {
             }
         }
         return true;
+    }
+
+    ArrayList<String> getTypes() throws SQLException {
+        Connection connection = generateConnection();
+        Statement statement;
+        try {
+            statement = connection.createStatement();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        ArrayList<String> result = new ArrayList<String>();
+        ResultSet resultSet = statement.executeQuery("select distinct(type) from reg;");
+        while (resultSet.next()) {
+            result.add(resultSet.getString(1));
+        }
+        return result;
     }
 
     void registerUser(String login, String hash) throws SQLException {

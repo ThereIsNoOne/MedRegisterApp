@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 public class MainWindow extends JFrame {
 
@@ -11,6 +12,7 @@ public class MainWindow extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(true);
         this.setVisible(true);
+        this.setJMenuBar(new MenuBar());
         this.setLayout(new GridBagLayout());
         this.getContentPane().setBackground(new Color(0x0));
 
@@ -19,13 +21,22 @@ public class MainWindow extends JFrame {
         constraints.weightx = 1;
         constraints.weighty = 1;
 
-        setPanels();
+        try {
+            setPanels(new DataManager().getAllTypes()[0]);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    e.getMessage(),
+                    "Fatal error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        }
 
         this.setVisible(true);
     }
 
-    private void setPanels() {
-        TablePanel tablePanel = new TablePanel();
+    private void setPanels(String type) {
+        TablePanel tablePanel = paintTable(type);
         constraints.gridx = 0;
         constraints.gridy = 0;
         constraints.gridheight = 2;
@@ -37,10 +48,13 @@ public class MainWindow extends JFrame {
         constraints.gridx = 1;
         this.add(plotPanel, constraints);
 
-        UtilsPanel utilsPanel = new UtilsPanel();
-        utilsPanel.setBackground(new Color(0x0000ff)); // temp
+        UtilsPanel utilsPanel = new UtilsPanel(tablePanel.table);
         constraints.gridy = 1;
         constraints.gridx = 1;
         this.add(utilsPanel, constraints);
+    }
+
+    TablePanel paintTable(String type) {
+        return new TablePanel(type);
     }
 }

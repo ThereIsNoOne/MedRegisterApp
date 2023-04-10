@@ -78,7 +78,7 @@ class PropertiesManager {
         return Boolean.parseBoolean(properties.getProperty("loggedIn"));
     }
 
-    String userId() {
+    String getUserId() {
         return properties.getProperty("userId");
     }
 

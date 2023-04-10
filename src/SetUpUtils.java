@@ -40,4 +40,24 @@ public class SetUpUtils {
         return password.toString();
 
     }
+
+    static void SetUpComboBox(JComboBox<String> comboBox, int x, int y, GridBagConstraints constraints) {
+        comboBox.setBackground(new Color(0xbbbbbb));
+        comboBox.setForeground(new Color(0x000000));
+        comboBox.setFont(new Font("Inter", Font.BOLD, 14));
+        constraints.gridx = x;
+        constraints.gridy = y;
+    }
+
+    static void setUpMenu(JMenu menu) {
+        menu.setFont(new Font("Inter", Font.BOLD, 12));
+        menu.setForeground(new Color(0xffffff));
+        menu.setBackground(new Color(0x050505));
+    }
+
+    static void setUpMenuItem(JMenuItem item) {
+        item.setFont(new Font("Inter", Font.BOLD, 12));
+        item.setForeground(new Color(0xffffff));
+        item.setBackground(new Color(0x050505));
+    }
 }

@@ -4,9 +4,10 @@ import java.awt.*;
 public class TablePanel extends JPanel {
 
     private final GridBagConstraints constraints = new GridBagConstraints();
+    JTable table;
 
-    TablePanel() {
-        this.setBackground(new Color(0xff00ff));
+    TablePanel(String type) {
+        this.setBackground(new Color(0x404040));
         this.setLayout(new GridBagLayout());
 
         constraints.fill = GridBagConstraints.BOTH;
@@ -14,11 +15,11 @@ public class TablePanel extends JPanel {
         constraints.weightx = 1;
         constraints.weighty = 1;
 
-        setUpTable();
+        setUpTable(type);
     }
 
-    private void setUpTable() {
-        JTable table = new JTable(new DataTableModel());
+    private void setUpTable(String type) {
+        this.table = new JTable(new DataTableModel(type));
         constraints.gridx = 0;
         constraints.gridy = 0;
         this.add(new JScrollPane(table), constraints);
