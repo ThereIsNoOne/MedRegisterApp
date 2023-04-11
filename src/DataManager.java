@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class DataManager {
@@ -44,5 +45,15 @@ public class DataManager {
             throw new RuntimeException(e);
         }
         return types.toArray(new String[0]);
+    }
+
+    void InsertNewRow(String type, float value, LocalDateTime date) {
+        DataRecord record = new DataRecord(login, value, date, type);
+        System.out.println(record);
+        try {
+            dbConnector.insertRow(record);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
