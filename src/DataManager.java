@@ -14,27 +14,18 @@ public class DataManager {
         this.dbConnector = new DatabaseConnector();
     }
 
-    DataRecord[] getDataRecords(String type) throws SQLException {
+    ArrayList<DataRecord> getDataRecords(String type) throws SQLException {
         return dbConnector.getDataRecords(login, type);
     }
 
-    Object[][] getTableRows(String type) {
-        DataRecord[] records;
+    ArrayList<DataRecord> getTableRows(String type) {
+        ArrayList<DataRecord> records = new ArrayList<DataRecord>();
         try {
             records = getDataRecords(type);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        Object[][] result = new Object[records.length][4];
-        int i = 0;
-        for (DataRecord record : records) {
-            result[i][0] = record.login;
-            result[i][1] = record.type;
-            result[i][2] = record.value;
-            result[i][3] = record.date;
-            i++;
-        }
-        return result;
+        return records;
     }
 
     String[] getAllTypes() {
@@ -48,12 +39,16 @@ public class DataManager {
     }
 
     void InsertNewRow(String type, float value, LocalDateTime date) {
-        DataRecord record = new DataRecord(login, value, date, type);
+        DataRecord record = getRecord(type, value, date);
         System.out.println(record);
         try {
             dbConnector.insertRow(record);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    DataRecord getRecord(String type, float value, LocalDateTime date) {
+        return new DataRecord(login, value, date, type);
     }
 }

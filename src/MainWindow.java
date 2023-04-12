@@ -48,7 +48,7 @@ public class MainWindow extends JFrame {
         constraints.gridx = 1;
         this.add(plotPanel, constraints);
 
-        UtilsPanel utilsPanel = new UtilsPanel(tablePanel.table);
+        UtilsPanel utilsPanel = new UtilsPanel(tablePanel.table, tablePanel.tableModel);
         constraints.gridy = 1;
         constraints.gridx = 1;
         this.add(utilsPanel, constraints);

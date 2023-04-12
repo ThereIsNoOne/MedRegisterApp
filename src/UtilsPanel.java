@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
+import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
@@ -11,8 +12,10 @@ public class UtilsPanel extends JPanel {
     private JTable table;
     private DataManager dataManager;
     private String activeType;
+    private DataTableModel model;
 
-    UtilsPanel(JTable table) {
+    UtilsPanel(JTable table, DataTableModel model) {
+        this.model = model;
         this.table = table;
         try {
             this.dataManager = new DataManager();
@@ -47,15 +50,51 @@ public class UtilsPanel extends JPanel {
 
     private void insertRow() {
         String[] result = showInsertDialog();
+        if (result == null) {
+            return;
+        }
         System.out.println(Arrays.toString(result));
-        LocalDateTime date = LocalDateTime.of(
-                Integer.parseInt(result[1]),
-                Integer.parseInt(result[2]),
-                Integer.parseInt(result[3]),
-                Integer.parseInt(result[4]),
-                Integer.parseInt(result[5])
-        );
-        dataManager.InsertNewRow(activeType, Float.parseFloat(result[0]), date);
+        LocalDateTime date;
+        try {
+            date = LocalDateTime.of(
+                    Integer.parseInt(result[1]),
+                    Integer.parseInt(result[2]),
+                    Integer.parseInt(result[3]),
+                    Integer.parseInt(result[4]),
+                    Integer.parseInt(result[5])
+            );
+        } catch (NumberFormatException | DateTimeException e) {
+            System.out.println(e);
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Your provided wrong data, try again.",
+                    "Error",
+                    JOptionPane.PLAIN_MESSAGE
+            );
+            return;
+        }
+
+        float value;
+        try {
+            value = Float.parseFloat(result[0]);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Your provided wrong data, try again.",
+                    "Error",
+                    JOptionPane.PLAIN_MESSAGE
+            );
+            return;
+        }
+
+        dataManager.InsertNewRow(activeType, value, date);
+        updateTable(dataManager.getRecord(activeType, value, date));
+
+    }
+
+    private void updateTable(DataRecord dataRecord) {
+        model.addRow(dataRecord);
+        model.fireTableRowsInserted(model.getRowCount() - 1, model.getRowCount() - 1);
     }
 
     private String[] showInsertDialog() {
@@ -80,7 +119,7 @@ public class UtilsPanel extends JPanel {
             }
         }
 
-        return new String[0];
+        return null;
     }
 
     private void setupComboBox() {
@@ -102,7 +141,9 @@ public class UtilsPanel extends JPanel {
     }
 
     private void selectNewType(String selectedItem) {
-        table.setModel(new DataTableModel(selectedItem));
+        activeType = selectedItem;
+        model = new DataTableModel(selectedItem);
+        table.setModel(model);
         System.out.println(selectedItem);
 
     }

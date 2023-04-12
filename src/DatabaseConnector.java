@@ -156,7 +156,7 @@ class DatabaseConnector {
         resultSet.getString(1);
     }
 
-    DataRecord[] getDataRecords(String login, String type) throws SQLException {
+    ArrayList<DataRecord> getDataRecords(String login, String type) throws SQLException {
         int rowsNumber = getNumberOfRows(login, type);
         int i = 0;
         Connection connection = generateConnection();
@@ -167,15 +167,17 @@ class DatabaseConnector {
             throw new RuntimeException(e);
         }
 
-        DataRecord[] data = new DataRecord[rowsNumber];
+        ArrayList<DataRecord> data = new ArrayList<>();
 
         ResultSet resultSet = statement.executeQuery("select * from reg where type=\""+type+"\" and login=\""+login+"\";");
         while (resultSet.next()) {
-            data[i] = new DataRecord(
+            data.add(
+                    new DataRecord(
                     resultSet.getString(1),
                     resultSet.getFloat(3),
                     resultSet.getTimestamp(4).toLocalDateTime(),
                     resultSet.getString(2)
+                    )
             );
             i++;
         }

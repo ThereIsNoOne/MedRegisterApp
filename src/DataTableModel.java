@@ -1,9 +1,10 @@
 import javax.swing.table.AbstractTableModel;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class DataTableModel extends AbstractTableModel {
     private final String[] columnNames = {"login", "type", "value", "register_time"};
-    private Object[][] data;
+    private ArrayList<DataRecord> data;
 
     DataTableModel(String type) {
         setData(type);
@@ -19,7 +20,9 @@ public class DataTableModel extends AbstractTableModel {
         data = manager.getTableRows(type);
     }
 
-
+    void addRow(DataRecord record) {
+        data.add(record);
+    }
 
     @Override
     public String getColumnName(int columnIndex) {
@@ -28,7 +31,7 @@ public class DataTableModel extends AbstractTableModel {
 
     @Override
     public int getRowCount() {
-        return data.length;
+        return data.size();
     }
 
     @Override
@@ -38,6 +41,18 @@ public class DataTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        return data[rowIndex][columnIndex];
+        return
+                switch (columnIndex) {
+            case 0 -> data.get(rowIndex).login;
+            case 1 -> data.get(rowIndex).type;
+            case 2 -> data.get(rowIndex).value;
+            case 3 -> data.get(rowIndex).date;
+            default -> "-";
+                };
+    }
+
+    @Override
+    public Class<?> getColumnClass(int columnIndex) {
+        return getValueAt(0, columnIndex)!=null ? getValueAt(0, columnIndex).getClass() : Object.class;
     }
 }
