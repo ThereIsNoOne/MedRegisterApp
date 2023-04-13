@@ -24,6 +24,10 @@ public class DataTableModel extends AbstractTableModel {
         data.add(record);
     }
 
+    void deleteRow(int[] rowIndexes) {
+        data.subList(rowIndexes[0], rowIndexes[rowIndexes.length - 1] + 1).clear();
+    }
+
     @Override
     public String getColumnName(int columnIndex) {
         return columnNames[columnIndex];

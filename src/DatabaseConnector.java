@@ -145,6 +145,18 @@ class DatabaseConnector {
         prepStmt.executeUpdate();
     }
 
+    void deleteRow(DataRecord dataRecord) throws SQLException {
+        Connection connection = generateConnection();
+
+        String sqlStm = "DELETE FROM reg WHERE login=? and type=? and value=? and register_time=?;";
+        PreparedStatement prepStmt = connection.prepareStatement(sqlStm);
+        prepStmt.setString(1, dataRecord.login);
+        prepStmt.setString(2, dataRecord.type);
+        prepStmt.setFloat(3, dataRecord.value);
+        prepStmt.setTimestamp(4, Timestamp.valueOf(dataRecord.date));
+        prepStmt.executeUpdate();
+    }
+
     void testConfiguration () throws SQLException {
         Connection connection = generateConnection();
 

@@ -5,6 +5,8 @@ import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
+// TODO: Add button to add type, support removing type (when deleting all data at certain type)
+
 public class UtilsPanel extends JPanel {
 
     private final GridBagConstraints constraints = new GridBagConstraints();
@@ -38,14 +40,18 @@ public class UtilsPanel extends JPanel {
         constraints.weighty = 1;
 
         setupComboBox();
-        setupInsertData();
+        setupButtons();
 
     }
 
-    private void setupInsertData() {
+    private void setupButtons() {
         JButton insert = new JButton("Insert");
         insert.addActionListener(e -> insertRow());
         SetUpUtils.setUpButton(this, insert, 0, 1, constraints);
+
+        JButton delete = new JButton("Delete");
+        delete.addActionListener(e -> deleteRow());
+        SetUpUtils.setUpButton(this, delete, 1, 1, constraints);
     }
 
     private void insertRow() {
@@ -95,6 +101,22 @@ public class UtilsPanel extends JPanel {
     private void updateTable(DataRecord dataRecord) {
         model.addRow(dataRecord);
         model.fireTableRowsInserted(model.getRowCount() - 1, model.getRowCount() - 1);
+    }
+
+    private void deleteRow() {
+        // TODO: Add exceptions!
+        System.out.println(table.getSelectedRow());
+        System.out.println(Arrays.toString(table.getSelectedRows()));
+        if (table.getSelectedRow() != -1) {
+            int[] rows = table.getSelectedRows();
+            for (int row: rows) {
+                dataManager.deleteRow(activeType,
+                        (float) model.getValueAt(row, 2),
+                        (LocalDateTime) model.getValueAt(row, 3));
+            }
+            model.deleteRow(rows);
+            model.fireTableRowsDeleted(rows[0], rows[rows.length -  1]);
+        }
     }
 
     private String[] showInsertDialog() {

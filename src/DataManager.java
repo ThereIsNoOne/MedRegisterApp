@@ -40,9 +40,17 @@ public class DataManager {
 
     void InsertNewRow(String type, float value, LocalDateTime date) {
         DataRecord record = getRecord(type, value, date);
-        System.out.println(record);
         try {
             dbConnector.insertRow(record);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    void deleteRow(String type, float value, LocalDateTime date) {
+        DataRecord record = getRecord(type, value, date);
+        try {
+            dbConnector.deleteRow(record);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
