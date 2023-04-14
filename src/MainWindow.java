@@ -22,7 +22,7 @@ public class MainWindow extends JFrame {
         constraints.weighty = 1;
 
         try {
-            setPanels(new DataManager().getAllTypes()[0]);
+            setPanels(new DataManager().getAllTypes().get(0));
         } catch (IOException e) {
             JOptionPane.showMessageDialog(
                     this,

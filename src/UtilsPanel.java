@@ -3,7 +3,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.time.DateTimeException;
 import java.time.LocalDateTime;
-import java.util.Arrays;
+import java.util.ArrayList;
 
 // TODO: Add button to add type, support removing type (when deleting all data at certain type)
 
@@ -12,9 +12,11 @@ public class UtilsPanel extends JPanel {
     private final GridBagConstraints constraints = new GridBagConstraints();
 
     private JTable table;
+    private ArrayList<String> types;
     private DataManager dataManager;
     private String activeType;
     private DataTableModel model;
+    private JComboBox<String> typesComboBox;
 
     UtilsPanel(JTable table, DataTableModel model) {
         this.model = model;
@@ -29,7 +31,7 @@ public class UtilsPanel extends JPanel {
                     JOptionPane.ERROR_MESSAGE
             );
         }
-        activeType = dataManager.getAllTypes()[0];
+        activeType = dataManager.getAllTypes().get(0);
 
         this.setBackground(new Color(0x404040));
         this.setLayout(new GridBagLayout());
@@ -52,6 +54,31 @@ public class UtilsPanel extends JPanel {
         JButton delete = new JButton("Delete");
         delete.addActionListener(e -> deleteRow());
         SetUpUtils.setUpButton(this, delete, 1, 1, constraints);
+
+        JButton addNewType = new JButton("Add type");
+        addNewType.addActionListener(e -> addType());
+        SetUpUtils.setUpButton(this, addNewType, 2, 1, constraints);
+    }
+
+    private void addType() {
+        String answer = JOptionPane.showInputDialog(this,
+                "Add new type of medical parameter:",
+                "Insert type",
+                JOptionPane.PLAIN_MESSAGE);
+        System.out.println(answer);
+        if (answer == null || answer.isEmpty()) {
+            return;
+        }
+        if (types.contains(answer)) {
+            JOptionPane.showMessageDialog(this,
+                    "This type of parameter already exists.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        activeType = answer;
+        types.add(answer);
+        typesComboBox.addItem(answer);
     }
 
     private void insertRow() {
@@ -59,7 +86,6 @@ public class UtilsPanel extends JPanel {
         if (result == null) {
             return;
         }
-        System.out.println(Arrays.toString(result));
         LocalDateTime date;
         try {
             date = LocalDateTime.of(
@@ -70,7 +96,6 @@ public class UtilsPanel extends JPanel {
                     Integer.parseInt(result[5])
             );
         } catch (NumberFormatException | DateTimeException e) {
-            System.out.println(e);
             JOptionPane.showMessageDialog(
                     this,
                     "Your provided wrong data, try again.",
@@ -105,17 +130,22 @@ public class UtilsPanel extends JPanel {
 
     private void deleteRow() {
         // TODO: Add exceptions!
-        System.out.println(table.getSelectedRow());
-        System.out.println(Arrays.toString(table.getSelectedRows()));
         if (table.getSelectedRow() != -1) {
             int[] rows = table.getSelectedRows();
-            for (int row: rows) {
+            for (int i=rows.length-1; i>=0; i--) {
+                int row = rows[i];
                 dataManager.deleteRow(activeType,
                         (float) model.getValueAt(row, 2),
                         (LocalDateTime) model.getValueAt(row, 3));
+                model.deleteRow(row);
+                model.fireTableRowsDeleted(row, row);
             }
-            model.deleteRow(rows);
-            model.fireTableRowsDeleted(rows[0], rows[rows.length -  1]);
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Data deleted successfully",
+                    "Operation completed successfully",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
         }
     }
 
@@ -145,9 +175,8 @@ public class UtilsPanel extends JPanel {
     }
 
     private void setupComboBox() {
-        String[] types;
         types = dataManager.getAllTypes();
-        if (types.length == 0) {
+        if (types.size() == 0) {
             JOptionPane.showMessageDialog(
                     this,
                     "There are no types",
@@ -155,7 +184,7 @@ public class UtilsPanel extends JPanel {
                     JOptionPane.ERROR_MESSAGE
             );
         }
-        JComboBox<String> typesComboBox = new JComboBox<>(types);
+        typesComboBox = new JComboBox<>(types.toArray(new String[0]));
         typesComboBox.addActionListener(e -> selectNewType((String) typesComboBox.getSelectedItem()));
         SetUpUtils.setUpComboBox(typesComboBox, 0, 0, constraints);
 

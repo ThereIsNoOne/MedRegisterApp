@@ -24,8 +24,8 @@ public class DataTableModel extends AbstractTableModel {
         data.add(record);
     }
 
-    void deleteRow(int[] rowIndexes) {
-        data.subList(rowIndexes[0], rowIndexes[rowIndexes.length - 1] + 1).clear();
+    void deleteRow(int rowIndex) {
+        data.remove(rowIndex);
     }
 
     @Override

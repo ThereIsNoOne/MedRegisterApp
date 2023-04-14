@@ -223,7 +223,7 @@ class DatabaseConnector {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        ArrayList<String> result = new ArrayList<String>();
+        ArrayList<String> result = new ArrayList<>();
         ResultSet resultSet = statement.executeQuery("select distinct(type) from reg;");
         while (resultSet.next()) {
             result.add(resultSet.getString(1));

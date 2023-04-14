@@ -19,7 +19,7 @@ public class DataManager {
     }
 
     ArrayList<DataRecord> getTableRows(String type) {
-        ArrayList<DataRecord> records = new ArrayList<DataRecord>();
+        ArrayList<DataRecord> records;
         try {
             records = getDataRecords(type);
         } catch (SQLException e) {
@@ -28,14 +28,18 @@ public class DataManager {
         return records;
     }
 
-    String[] getAllTypes() {
+    ArrayList<String> getAllTypes() {
         ArrayList<String> types;
         try {
             types = dbConnector.getTypes();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return types.toArray(new String[0]);
+        return types;
+    }
+
+    void addType(String type) {
+
     }
 
     void InsertNewRow(String type, float value, LocalDateTime date) {
