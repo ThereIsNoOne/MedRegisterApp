@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class DataManager {
 
-    private String login;
+    private final String login;
     private final DatabaseConnector dbConnector;
 
     DataManager() throws IOException {
@@ -18,28 +18,17 @@ public class DataManager {
         return dbConnector.getDataRecords(login, type);
     }
 
-    ArrayList<DataRecord> getTableRows(String type) {
-        ArrayList<DataRecord> records;
-        try {
-            records = getDataRecords(type);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return records;
-    }
-
     ArrayList<String> getAllTypes() {
         ArrayList<String> types;
         try {
-            types = dbConnector.getTypes();
+            types = dbConnector.getTypes(login);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        if (types.size() == 0) {
+            types.add("temperature");
+        }
         return types;
-    }
-
-    void addType(String type) {
-
     }
 
     void InsertNewRow(String type, float value, LocalDateTime date) {

@@ -5,8 +5,6 @@ import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-// TODO: Add button to add type, support removing type (when deleting all data at certain type)
-
 public class UtilsPanel extends JPanel {
 
     private final GridBagConstraints constraints = new GridBagConstraints();
@@ -146,6 +144,16 @@ public class UtilsPanel extends JPanel {
                     "Operation completed successfully",
                     JOptionPane.INFORMATION_MESSAGE
             );
+            checkIfEmpty();
+        }
+    }
+
+    private void checkIfEmpty() {
+        if (model.getRowCount() == 0) {
+            typesComboBox.removeItem(activeType);
+            types = dataManager.getAllTypes();
+            typesComboBox.setSelectedItem(types.get(0));
+            selectNewType(types.get(0));
         }
     }
 
@@ -176,14 +184,6 @@ public class UtilsPanel extends JPanel {
 
     private void setupComboBox() {
         types = dataManager.getAllTypes();
-        if (types.size() == 0) {
-            JOptionPane.showMessageDialog(
-                    this,
-                    "There are no types",
-                    "Fatal error",
-                    JOptionPane.ERROR_MESSAGE
-            );
-        }
         typesComboBox = new JComboBox<>(types.toArray(new String[0]));
         typesComboBox.addActionListener(e -> selectNewType((String) typesComboBox.getSelectedItem()));
         SetUpUtils.setUpComboBox(typesComboBox, 0, 0, constraints);
@@ -195,7 +195,5 @@ public class UtilsPanel extends JPanel {
         activeType = selectedItem;
         model = new DataTableModel(selectedItem);
         table.setModel(model);
-        System.out.println(selectedItem);
-
     }
 }

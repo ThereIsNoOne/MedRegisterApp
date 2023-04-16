@@ -12,7 +12,7 @@ public class MainWindow extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(true);
         this.setVisible(true);
-        this.setJMenuBar(new MenuBar());
+        this.setJMenuBar(new MenuBar(this));
         this.setLayout(new GridBagLayout());
         this.getContentPane().setBackground(new Color(0x0));
 
@@ -36,7 +36,7 @@ public class MainWindow extends JFrame {
     }
 
     private void setPanels(String type) {
-        TablePanel tablePanel = paintTable(type);
+        TablePanel tablePanel = new TablePanel(type);
         constraints.gridx = 0;
         constraints.gridy = 0;
         constraints.gridheight = 2;
@@ -54,7 +54,16 @@ public class MainWindow extends JFrame {
         this.add(utilsPanel, constraints);
     }
 
-    TablePanel paintTable(String type) {
-        return new TablePanel(type);
+    void reloadPanels() {
+        try {
+            setPanels(new DataManager().getAllTypes().get(0));
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    e.getMessage(),
+                    "Fatal error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        }
     }
 }

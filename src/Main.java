@@ -2,13 +2,9 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
-// TODO: Add getter for current user data.
-// TODO: Add documentation
-// TODO: Start working on Login/Register window
-// TODO: Start working on main window
+// TODO: Add documentation!!!
 // TODO: Create class responsible for drawing plots (in main window)
 // TODO: Ask Ola for duck drawing
-// REMINDER: Use JTable for GUI table.
 
 public class Main {
     public static void main(String[] args) throws IOException, SQLException, NoSuchAlgorithmException, InterruptedException {
@@ -16,6 +12,7 @@ public class Main {
         // Temporary test area
 
         DatabaseConnector connector = new DatabaseConnector();
+        connector.importAuthDB();
 //        AuthorizationManager authManager = new AuthorizationManager();
 //        PropertiesManager propertiesManager = new PropertiesManager("res/config.properties");
 //        DataManager dataManager = new DataManager("admin");

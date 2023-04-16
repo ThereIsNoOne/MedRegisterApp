@@ -135,6 +135,16 @@ public class RegisterWindow extends JFrame {
                     "Success",
                     JOptionPane.INFORMATION_MESSAGE
             );
+            try {
+                new DatabaseConnector().exportAuthDB();
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(
+                        null,
+                        "Cannot connect to database.",
+                        "Fatal error",
+                        JOptionPane.ERROR_MESSAGE
+                );
+            }
             new LoginWindow();
             this.dispose();
             return;

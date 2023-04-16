@@ -3,7 +3,6 @@ import java.awt.*;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
-// TODO: Add checkbox "remember me"
 
 public class LoginWindow extends JFrame {
 
@@ -11,6 +10,7 @@ public class LoginWindow extends JFrame {
 
     private JTextField loginEntry;
     private JPasswordField passwordEntry;
+    private JCheckBox rememberMe;
 
     LoginWindow( ) {
         this.setTitle("Login");
@@ -26,8 +26,16 @@ public class LoginWindow extends JFrame {
         drawButtons();
         drawEntries();
         drawLabels();
+        drawCheckbox();
 
         this.setVisible(true);
+    }
+
+    private void drawCheckbox() {
+        rememberMe = new JCheckBox("Remember me");
+        constraints.gridwidth = 2;
+        SetUpUtils.setUpCheckBox(this, rememberMe, 0, 4, constraints);
+        constraints.gridwidth = 1;
     }
 
     private void drawLabels() {
@@ -69,11 +77,11 @@ public class LoginWindow extends JFrame {
         JButton confirmButton = new JButton();
         confirmButton.setText("Login");
         confirmButton.addActionListener(e -> authorizeUser());
-        SetUpUtils.setUpButton(this, confirmButton, 0, 4, constraints);
+        SetUpUtils.setUpButton(this, confirmButton, 0, 5, constraints);
 
         JButton registerButton = new JButton("Don't have an account?");
         registerButton.addActionListener(e -> openRegisterWindow());
-        SetUpUtils.setUpButton(this, registerButton, 1, 4, constraints);
+        SetUpUtils.setUpButton(this, registerButton, 1, 5, constraints);
 
     }
 
@@ -123,7 +131,7 @@ public class LoginWindow extends JFrame {
         assert propertiesManager != null;
         if (authorized) {
             propertiesManager.setUserId(loginEntry.getText());
-            propertiesManager.setLoggedIn(true);
+            propertiesManager.setLoggedIn(rememberMe.isSelected());
             System.out.println("Ok");
             new MainWindow();
             this.dispose();

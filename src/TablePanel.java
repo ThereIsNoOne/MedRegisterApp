@@ -22,7 +22,6 @@ public class TablePanel extends JPanel {
 
     private void setUpTable() {
         this.table = new JTable(tableModel);
-        table.setAutoCreateRowSorter(true);
         constraints.gridx = 0;
         constraints.gridy = 0;
         this.add(new JScrollPane(table), constraints);

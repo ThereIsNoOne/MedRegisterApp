@@ -70,6 +70,16 @@ public class SetUpUtils {
 
     }
 
+    static void setUpCheckBox(JFrame frame, JCheckBox checkBox, int x, int y, GridBagConstraints constraints) {
+        checkBox.setFont(new Font("Inter", Font.PLAIN, 12));
+        checkBox.setBackground(new Color(0x606060));
+        checkBox.setForeground(new Color(0xdddddd));
+        checkBox.setFocusable(false);
+        constraints.gridy = y;
+        constraints.gridx = x;
+        frame.add(checkBox, constraints);
+    }
+
     static void setUpComboBox(JComboBox<String> comboBox, int x, int y, GridBagConstraints constraints) {
         comboBox.setBackground(new Color(0xbbbbbb));
         comboBox.setForeground(new Color(0x000000));

@@ -1,5 +1,6 @@
 import javax.swing.table.AbstractTableModel;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class DataTableModel extends AbstractTableModel {
@@ -17,7 +18,11 @@ public class DataTableModel extends AbstractTableModel {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        data = manager.getTableRows(type);
+        try {
+            data = manager.getDataRecords(type);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     void addRow(DataRecord record) {

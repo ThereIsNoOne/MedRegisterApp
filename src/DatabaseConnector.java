@@ -215,7 +215,7 @@ class DatabaseConnector {
         return true;
     }
 
-    ArrayList<String> getTypes() throws SQLException {
+    ArrayList<String> getTypes(String login) throws SQLException {
         Connection connection = generateConnection();
         Statement statement;
         try {
@@ -224,7 +224,7 @@ class DatabaseConnector {
             throw new RuntimeException(e);
         }
         ArrayList<String> result = new ArrayList<>();
-        ResultSet resultSet = statement.executeQuery("select distinct(type) from reg;");
+        ResultSet resultSet = statement.executeQuery("select distinct(type) from reg where login=\""+login+"\";");
         while (resultSet.next()) {
             result.add(resultSet.getString(1));
         }

@@ -36,7 +36,7 @@ CREATE TABLE `reg` (
 
 LOCK TABLES `reg` WRITE;
 /*!40000 ALTER TABLE `reg` DISABLE KEYS */;
-INSERT INTO `reg` (`login`, `type`, `value`, `register_time`) VALUES ('admin','temperature',36.60,'2023-03-24 17:26:11'),('admin','temperature',36.70,'2023-03-25 21:45:22'),('admin','temperature',36.50,'2023-03-28 21:22:08'),('admin','temperature',36.20,'2023-03-28 21:22:14'),('tester1','temperature',36.60,'2023-03-28 21:22:46'),('tester1','blood pressure',36.60,'2023-03-28 21:22:57'),('admin','blood pressure',180.00,'2023-03-28 21:24:00');
+INSERT INTO `reg` (`login`, `type`, `value`, `register_time`) VALUES ('tester1','dummy type',120.00,'2023-03-24 18:26:11'),('admin','temperature',37.60,'2023-03-24 17:26:11'),('admin','temperature',36.70,'2023-03-25 21:45:22'),('admin','temperature',36.50,'2023-03-28 21:22:08'),('admin','temperature',36.20,'2023-03-28 21:22:14'),('tester1','temperature',36.60,'2023-03-28 21:22:46'),('tester1','blood pressure',36.60,'2023-03-28 21:22:57'),('admin','blood pressure',180.00,'2023-03-28 21:24:00'),('SzymonLas','temperature',36.60,'2012-04-04 02:20:00');
 /*!40000 ALTER TABLE `reg` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -49,4 +49,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-03-29 20:24:40
+-- Dump completed on 2023-04-16 21:50:40

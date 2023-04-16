@@ -1,9 +1,25 @@
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 public class MenuBar extends JMenuBar {
 
-    MenuBar() {
+    private final MainWindow frame;
+    private DatabaseConnector dbConnector;
+
+    MenuBar(MainWindow frame) {
+        this.frame = frame;
+        try {
+            this.dbConnector = new DatabaseConnector();
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Could not connect to database.",
+                    "Fatal error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        }
         this.setBackground(new Color(0x050505));
         this.setBorder(BorderFactory.createEmptyBorder());
 
@@ -35,14 +51,37 @@ public class MenuBar extends JMenuBar {
     }
 
     private void importDB() {
-
+        dbConnector.importRegDB();
+        try {
+            TimeUnit.SECONDS.sleep(1);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        // TODO: Add progress bar
+        new MainWindow();
+        frame.dispose();
     }
 
     private void exportDB() {
-
+        dbConnector.exportRegDB();
     }
 
     private void logOut() {
+        PropertiesManager propertiesManager = null;
+        try {
+            propertiesManager = new PropertiesManager("res/config.properties");
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Could not find config file!",
+                    "Fatal error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        }
+        assert propertiesManager != null;
+        propertiesManager.setLoggedIn(false);
+        new LoginWindow();
+        frame.dispose();
 
     }
 
