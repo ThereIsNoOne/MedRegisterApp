@@ -40,14 +40,21 @@ public class MenuBar extends JMenuBar {
         JMenuItem importDB = new JMenuItem("Import");
         importDB.addActionListener(e -> importDB());
         SetUpUtils.setUpMenuItem(importDB);
-//        JMenuItem config = new JMenuItem("Config");
+        JMenuItem config = new JMenuItem("Config");
+        config.addActionListener(e -> configWindow());
+        SetUpUtils.setUpMenuItem(config);
+
 
         fileMenu.add(logOut);
         fileMenu.add(exportDB);
         fileMenu.add(importDB);
-//        fileMenu.add(config);
+        fileMenu.add(config);
 
         return fileMenu;
+    }
+
+    private void configWindow() {
+        new ConfigurationWindow();
     }
 
     private void importDB() {
@@ -89,18 +96,11 @@ public class MenuBar extends JMenuBar {
         JMenu editMenu = new JMenu("Edit");
         SetUpUtils.setUpMenu(editMenu);
 
-        JMenuItem addRow = new JMenuItem("Add row");
-        addRow.addActionListener(e -> addRow());
-        SetUpUtils.setUpMenuItem(addRow);
-        JMenuItem addType = new JMenuItem("Add type");
-        addType.addActionListener(e -> addType());
-        SetUpUtils.setUpMenuItem(addType);
         JMenuItem drawPlot = new JMenuItem("Draw plot");
         drawPlot.addActionListener(e -> drawPlot());
         SetUpUtils.setUpMenuItem(drawPlot);
 
-        editMenu.add(addRow);
-        editMenu.add(addType);
+
         editMenu.add(drawPlot);
 
         return editMenu;

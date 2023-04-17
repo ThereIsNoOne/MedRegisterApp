@@ -15,7 +15,7 @@ public class ConfigurationWindow extends JFrame {
 
     ConfigurationWindow() {
         this.setTitle("Database configuration");
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setResizable(false);
         this.setSize(700, 420);
         this.setLayout(new GridBagLayout());
@@ -133,7 +133,7 @@ public class ConfigurationWindow extends JFrame {
         } catch (IOException | SQLException | InterruptedException |RuntimeException e) {
             JOptionPane.showMessageDialog(
                     this,
-                    "Something went wrong, check all information you provided, if it does not work, then we have big problem :(",
+                    e.getMessage(),
                     "Fatal error",
                     JOptionPane.ERROR_MESSAGE
             );

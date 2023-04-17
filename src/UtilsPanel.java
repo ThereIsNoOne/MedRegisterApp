@@ -59,16 +59,15 @@ public class UtilsPanel extends JPanel {
     }
 
     private void addType() {
-        String answer = JOptionPane.showInputDialog(this,
+        String answer = JOptionPane.showInputDialog(null,
                 "Add new type of medical parameter:",
                 "Insert type",
                 JOptionPane.PLAIN_MESSAGE);
-        System.out.println(answer);
         if (answer == null || answer.isEmpty()) {
             return;
         }
         if (types.contains(answer)) {
-            JOptionPane.showMessageDialog(this,
+            JOptionPane.showMessageDialog(null,
                     "This type of parameter already exists.",
                     "Error",
                     JOptionPane.ERROR_MESSAGE);

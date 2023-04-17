@@ -12,7 +12,8 @@ public class Main {
         // Temporary test area
 
         DatabaseConnector connector = new DatabaseConnector();
-        connector.importAuthDB();
+//        connector.exportTest("test", "SQL/test.sql");
+
 //        AuthorizationManager authManager = new AuthorizationManager();
 //        PropertiesManager propertiesManager = new PropertiesManager("res/config.properties");
 //        DataManager dataManager = new DataManager("admin");

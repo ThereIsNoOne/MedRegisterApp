@@ -67,13 +67,13 @@ class DatabaseConnector {
         }
     }
 
-    private void exportTest(String testName, String testPath) throws IOException {
+    void exportTest(String testName, String testPath) throws IOException {
         String command = generateCommand(testName, testPath, Mode.EXPORT);
         Runtime.getRuntime().exec("cmd /c "+command);
 
     }
 
-    private void importTest(String testName, String testPath) throws IOException {
+    void importTest(String testName, String testPath) throws IOException {
         String command = generateCommand(testName, testPath, Mode.IMPORT);
         Runtime.getRuntime().exec("cmd /c "+command);
     }
@@ -103,7 +103,15 @@ class DatabaseConnector {
         prepStmt.executeUpdate();
     }
 
+    void importAll(String testName, String testPath) throws IOException {
+        importAuthDB();
+        importRegDB();
+        importTest(testName, testPath);
+    }
+
     void testConnection (String testName, String testPath) throws IOException, SQLException, InterruptedException {
+        importAll(testName, testPath);
+        TimeUnit.SECONDS.sleep(2); // TEMP!
         exportTest(testName, testPath);
         TimeUnit.SECONDS.sleep(1);
         int beforeImport = getTestValues();
