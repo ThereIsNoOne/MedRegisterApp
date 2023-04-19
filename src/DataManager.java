@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 public class DataManager {
 
+    enum DataType {DATA, VALUE}
     private final String login;
     private final DatabaseConnector dbConnector;
 
@@ -51,5 +52,9 @@ public class DataManager {
 
     DataRecord getRecord(String type, float value, LocalDateTime date) {
         return new DataRecord(login, value, date, type);
+    }
+
+    void setValue(String type, float value, LocalDateTime date, float oldValue) throws SQLException {
+        dbConnector.setValue(getRecord(type, value, date), oldValue);
     }
 }

@@ -15,7 +15,7 @@ public class ConfigurationWindow extends JFrame {
 
     ConfigurationWindow() {
         this.setTitle("Database configuration");
-            this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
         this.setSize(700, 420);
         this.setLayout(new GridBagLayout());

@@ -40,7 +40,7 @@ public class MenuBar extends JMenuBar {
         JMenuItem importDB = new JMenuItem("Import");
         importDB.addActionListener(e -> importDB());
         SetUpUtils.setUpMenuItem(importDB);
-        JMenuItem config = new JMenuItem("Config");
+        JMenuItem config = new JMenuItem("Reconfigure");
         config.addActionListener(e -> configWindow());
         SetUpUtils.setUpMenuItem(config);
 
@@ -55,6 +55,7 @@ public class MenuBar extends JMenuBar {
 
     private void configWindow() {
         new ConfigurationWindow();
+        frame.dispose();
     }
 
     private void importDB() {

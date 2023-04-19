@@ -1,23 +1,25 @@
 import javax.swing.table.AbstractTableModel;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class DataTableModel extends AbstractTableModel {
     private final String[] columnNames = {"login", "type", "value", "register_time"};
     private ArrayList<DataRecord> data;
 
+    private DataManager manager;
+
     DataTableModel(String type) {
+        try {
+            this.manager = new DataManager();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         setData(type);
     }
 
     void setData(String type) {
-        DataManager manager;
-        try {
-            manager = new DataManager();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
         try {
             data = manager.getDataRecords(type);
         } catch (SQLException e) {
@@ -31,6 +33,23 @@ public class DataTableModel extends AbstractTableModel {
 
     void deleteRow(int rowIndex) {
         data.remove(rowIndex);
+    }
+
+    @Override
+    public void setValueAt(Object value, int rowIndex, int columnIndex) {
+        DataRecord row = data.get(rowIndex);
+        float oldValue = (float) getValueAt(rowIndex, columnIndex);
+        row.setValue((float) value);
+        try {
+            manager.setValue(row.getType(), row.getValue(), row.getDate(), oldValue);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public boolean isCellEditable(int rowIndex, int columIndex) {
+        return (columIndex == 2);
     }
 
     @Override
@@ -52,10 +71,10 @@ public class DataTableModel extends AbstractTableModel {
     public Object getValueAt(int rowIndex, int columnIndex) {
         return
                 switch (columnIndex) {
-            case 0 -> data.get(rowIndex).login;
-            case 1 -> data.get(rowIndex).type;
-            case 2 -> data.get(rowIndex).value;
-            case 3 -> data.get(rowIndex).date;
+            case 0 -> data.get(rowIndex).getLogin();
+            case 1 -> data.get(rowIndex).getType();
+            case 2 -> data.get(rowIndex).getValue();
+            case 3 -> data.get(rowIndex).getDate();
             default -> "-";
                 };
     }

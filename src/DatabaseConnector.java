@@ -146,10 +146,10 @@ class DatabaseConnector {
         String sqlStm = "INSERT INTO reg values (?, ?, ?, ?);";
 
         PreparedStatement prepStmt = connection.prepareStatement(sqlStm);
-        prepStmt.setString(1, dataRecord.login);
-        prepStmt.setString(2, dataRecord.type);
-        prepStmt.setFloat(3, dataRecord.value);
-        prepStmt.setTimestamp(4, Timestamp.valueOf(dataRecord.date));
+        prepStmt.setString(1, dataRecord.getLogin());
+        prepStmt.setString(2, dataRecord.getType());
+        prepStmt.setFloat(3, dataRecord.getValue());
+        prepStmt.setTimestamp(4, Timestamp.valueOf(dataRecord.getDate()));
         prepStmt.executeUpdate();
     }
 
@@ -158,10 +158,10 @@ class DatabaseConnector {
 
         String sqlStm = "DELETE FROM reg WHERE login=? and type=? and value=? and register_time=?;";
         PreparedStatement prepStmt = connection.prepareStatement(sqlStm);
-        prepStmt.setString(1, dataRecord.login);
-        prepStmt.setString(2, dataRecord.type);
-        prepStmt.setFloat(3, dataRecord.value);
-        prepStmt.setTimestamp(4, Timestamp.valueOf(dataRecord.date));
+        prepStmt.setString(1, dataRecord.getLogin());
+        prepStmt.setString(2, dataRecord.getType());
+        prepStmt.setFloat(3, dataRecord.getValue());
+        prepStmt.setTimestamp(4, Timestamp.valueOf(dataRecord.getDate()));
         prepStmt.executeUpdate();
     }
 
@@ -221,6 +221,19 @@ class DatabaseConnector {
             }
         }
         return true;
+    }
+
+    void setValue(DataRecord dataRecord, float oldValue) throws SQLException {
+        Connection connection = generateConnection();
+        String statement = "UPDATE reg SET value=? WHERE login=? AND type=? AND register_time=? AND value=?;";
+        PreparedStatement preparedStatement = connection.prepareStatement(statement);
+        preparedStatement.setString(2, dataRecord.getLogin());
+        preparedStatement.setString(3, dataRecord.getType());
+        preparedStatement.setFloat(5, oldValue);
+        preparedStatement.setFloat(1, dataRecord.getValue());
+        preparedStatement.setTimestamp(4, Timestamp.valueOf(dataRecord.getDate()));
+
+        preparedStatement.executeUpdate();
     }
 
     ArrayList<String> getTypes(String login) throws SQLException {
