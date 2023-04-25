@@ -7,7 +7,7 @@ public class TablePanel extends JPanel {
     DataTableModel tableModel;
     JTable table;
 
-    TablePanel(String type) {
+    TablePanel(String type, MainWindow parent) {
         this.setBackground(new Color(0x404040));
         this.setLayout(new GridBagLayout());
         this.tableModel = new DataTableModel(type);

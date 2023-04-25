@@ -15,10 +15,12 @@ public class UtilsPanel extends JPanel {
     private String activeType;
     private DataTableModel model;
     private JComboBox<String> typesComboBox;
+    MainWindow parent;
 
-    UtilsPanel(JTable table, DataTableModel model) {
+    UtilsPanel(JTable table, DataTableModel model, MainWindow parent) {
         this.model = model;
         this.table = table;
+        this.parent = parent;
         try {
             this.dataManager = new DataManager();
         } catch (IOException e) {
@@ -193,6 +195,10 @@ public class UtilsPanel extends JPanel {
     private void selectNewType(String selectedItem) {
         activeType = selectedItem;
         model = new DataTableModel(selectedItem);
-        table.setModel(model);
+        parent.setModel(model);
+    }
+
+    public void setModel(DataTableModel model) {
+        this.model = model;
     }
 }

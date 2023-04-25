@@ -1,10 +1,14 @@
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
-
+// Plotly
 public class MainWindow extends JFrame {
 
     private final GridBagConstraints constraints = new GridBagConstraints();
+    private DataTableModel model;
+    private TablePanel tablePanel;
+    private PlotPanel plotPanel;
+    private UtilsPanel utilsPanel;
 
     MainWindow() {
         this.setTitle("Medical parameters register");
@@ -35,35 +39,31 @@ public class MainWindow extends JFrame {
         this.setVisible(true);
     }
 
+    public void setModel(DataTableModel model) {
+        this.model = model;
+        tablePanel.table.setModel(model);
+        plotPanel.setModel(model);
+
+    }
+
     private void setPanels(String type) {
-        TablePanel tablePanel = new TablePanel(type);
+        tablePanel = new TablePanel(type, this);
         constraints.gridx = 0;
         constraints.gridy = 0;
         constraints.gridheight = 2;
         this.add(tablePanel, constraints);
         constraints.gridheight = 1;
 
-        PlotPanel plotPanel = new PlotPanel();
+        plotPanel = new PlotPanel(tablePanel.tableModel, this);
         constraints.gridy = 0;
         constraints.gridx = 1;
         this.add(plotPanel, constraints);
 
-        UtilsPanel utilsPanel = new UtilsPanel(tablePanel.table, tablePanel.tableModel);
+        utilsPanel = new UtilsPanel(tablePanel.table, tablePanel.tableModel, this);
         constraints.gridy = 1;
         constraints.gridx = 1;
         this.add(utilsPanel, constraints);
     }
 
-    void reloadPanels() {
-        try {
-            setPanels(new DataManager().getAllTypes().get(0));
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(
-                    this,
-                    e.getMessage(),
-                    "Fatal error",
-                    JOptionPane.ERROR_MESSAGE
-            );
-        }
-    }
+
 }

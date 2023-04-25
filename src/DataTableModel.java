@@ -1,13 +1,11 @@
 import javax.swing.table.AbstractTableModel;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class DataTableModel extends AbstractTableModel {
     private final String[] columnNames = {"login", "type", "value", "register_time"};
     private ArrayList<DataRecord> data;
-
     private DataManager manager;
 
     DataTableModel(String type) {
@@ -82,5 +80,9 @@ public class DataTableModel extends AbstractTableModel {
     @Override
     public Class<?> getColumnClass(int columnIndex) {
         return getValueAt(0, columnIndex)!=null ? getValueAt(0, columnIndex).getClass() : Object.class;
+    }
+
+    public ArrayList<DataRecord> getData() {
+        return data;
     }
 }
