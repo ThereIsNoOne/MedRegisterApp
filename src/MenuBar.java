@@ -65,7 +65,6 @@ public class MenuBar extends JMenuBar {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        // TODO: Add progress bar
         new MainWindow();
         frame.dispose();
     }
@@ -108,7 +107,7 @@ public class MenuBar extends JMenuBar {
     }
 
     private void drawPlot() {
-
+        getParent().repaint();
     }
 
     private void addType() {

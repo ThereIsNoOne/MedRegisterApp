@@ -95,13 +95,18 @@ public class UtilsPanel extends JPanel {
                     Integer.parseInt(result[5])
             );
         } catch (NumberFormatException | DateTimeException e) {
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Your provided wrong data, try again.",
-                    "Error",
-                    JOptionPane.PLAIN_MESSAGE
-            );
-            return;
+            if (result[1].isBlank() && result[2].isBlank() && result[3].isBlank() && result[4].isBlank() && result[5].isBlank()) {
+                date = LocalDateTime.now();
+            }
+            else {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Your provided wrong data, try again.",
+                        "Error",
+                        JOptionPane.PLAIN_MESSAGE
+                );
+                return;
+            }
         }
 
         float value;
@@ -125,6 +130,7 @@ public class UtilsPanel extends JPanel {
     private void updateTable(DataRecord dataRecord) {
         model.addRow(dataRecord);
         model.fireTableRowsInserted(model.getRowCount() - 1, model.getRowCount() - 1);
+        parent.repaint();
     }
 
     private void deleteRow() {
@@ -145,6 +151,7 @@ public class UtilsPanel extends JPanel {
                     "Operation completed successfully",
                     JOptionPane.INFORMATION_MESSAGE
             );
+            parent.repaint();
             checkIfEmpty();
         }
     }
@@ -196,6 +203,7 @@ public class UtilsPanel extends JPanel {
         activeType = selectedItem;
         model = new DataTableModel(selectedItem);
         parent.setModel(model);
+        parent.repaint();
     }
 
     public void setModel(DataTableModel model) {

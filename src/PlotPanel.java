@@ -2,12 +2,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Line2D;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class PlotPanel extends JPanel {
 
     private final int margin = 20;
+    private final int offset = margin* 2/3;
     private Graphics2D graph;
     private int plotWidth;
     private int plotHeight;
@@ -39,10 +40,40 @@ public class PlotPanel extends JPanel {
     private void drawPoints() {
         vertical = getMinMaxValue();
         horizontal = getMinMaxDate();
-        System.out.println(Arrays.toString(vertical));
-        System.out.println(Arrays.toString(horizontal));
-        System.out.println(points);
+        long horizontalAxisLength = getHorizontalAxisLength();
+        long verticalAxisLength = getVerticalAxisLength();
+        long horizontalDistance = horizontal[0].until(horizontal[1], ChronoUnit.SECONDS);
+        float verticalDistance = vertical[1] - vertical[0];
+        if (verticalDistance == 0) {
+            verticalDistance = verticalAxisLength;
+        }
+        if (horizontalDistance == 0) {
+            horizontalDistance = horizontalAxisLength;
+        }
+        int start = getWidth() - margin - offset;
+        for (DataRecord record : points) {
+            int x = start - (int) (horizontalAxisLength * ((double) record.getDate().until(horizontal[1], ChronoUnit.SECONDS)/horizontalDistance));
+            int y = margin + offset + (int) (verticalAxisLength * (double)((vertical[1] - record.getValue())/verticalDistance));
+            System.out.println(record);
+            drawCircle(x, y);
+        }
+    }
 
+    private long getVerticalAxisLength() {
+        return getHeight()-margin-offset - (margin + offset);
+    }
+
+    private void drawCircle(int x, int y) {
+        int radius = 6;
+        x = x - (radius/2);
+        y = y - (radius/2);
+        System.out.println(x);
+        System.out.println(y);
+        graph.fillOval(x, y, radius, radius);
+    }
+
+    private long getHorizontalAxisLength() {
+        return getWidth() - margin - offset - (margin + offset);
     }
 
     private float[] getMinMaxValue() {
@@ -79,5 +110,6 @@ public class PlotPanel extends JPanel {
 
     public void setModel(DataTableModel model) {
         this.model = model;
+
     }
 }
