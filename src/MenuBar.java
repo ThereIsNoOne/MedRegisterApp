@@ -8,6 +8,10 @@ public class MenuBar extends JMenuBar {
     private final MainWindow frame;
     private DatabaseConnector dbConnector;
 
+    /**
+     * Constructor of the Menu Bar.
+     * @param frame parent frame
+     */
     MenuBar(MainWindow frame) {
         this.frame = frame;
         try {
@@ -27,6 +31,10 @@ public class MenuBar extends JMenuBar {
         this.add(setupEditMenu());
     }
 
+    /**
+     * Set up file menu.
+     * @return file menu
+     */
     private JMenu setupFileMenu() {
         JMenu fileMenu = new JMenu("File");
         SetUpUtils.setUpMenu(fileMenu);
@@ -53,11 +61,17 @@ public class MenuBar extends JMenuBar {
         return fileMenu;
     }
 
+    /**
+     * Open configuration window.
+     */
     private void configWindow() {
         new ConfigurationWindow();
         frame.dispose();
     }
 
+    /**
+     * Import database.
+     */
     private void importDB() {
         dbConnector.importRegDB();
         try {
@@ -69,10 +83,16 @@ public class MenuBar extends JMenuBar {
         frame.dispose();
     }
 
+    /**
+     * Export database.
+     */
     private void exportDB() {
         dbConnector.exportRegDB();
     }
 
+    /**
+     * Log out database.
+     */
     private void logOut() {
         PropertiesManager propertiesManager = null;
         try {
@@ -92,6 +112,10 @@ public class MenuBar extends JMenuBar {
 
     }
 
+    /**
+     * Set up edit menu.
+     * @return edit menu
+     */
     private JMenu setupEditMenu() {
         JMenu editMenu = new JMenu("Edit");
         SetUpUtils.setUpMenu(editMenu);
@@ -106,17 +130,11 @@ public class MenuBar extends JMenuBar {
         return editMenu;
     }
 
+    /**
+     * Redraw plot.
+     */
     private void drawPlot() {
         getParent().repaint();
     }
-
-    private void addType() {
-
-    }
-
-    private void addRow() {
-
-    }
-
 
 }

@@ -1,10 +1,12 @@
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
-import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
+/**
+ * Class representing utils panel, responsible for handling various user actions.
+ */
 public class UtilsPanel extends JPanel {
 
     private final GridBagConstraints constraints = new GridBagConstraints();
@@ -17,6 +19,12 @@ public class UtilsPanel extends JPanel {
     private JComboBox<String> typesComboBox;
     MainWindow parent;
 
+    /**
+     * Constructor of the UtilsPanel.
+     * @param table window table
+     * @param model data model
+     * @param parent parent component
+     */
     UtilsPanel(JTable table, DataTableModel model, MainWindow parent) {
         this.model = model;
         this.table = table;
@@ -46,6 +54,9 @@ public class UtilsPanel extends JPanel {
 
     }
 
+    /**
+     * Draw the buttons.
+     */
     private void setupButtons() {
         JButton insert = new JButton("Insert");
         insert.addActionListener(e -> insertRow());
@@ -60,6 +71,9 @@ public class UtilsPanel extends JPanel {
         SetUpUtils.setUpButton(this, addNewType, 2, 1, constraints);
     }
 
+    /**
+     * Add new type of medical parameter to choose.
+     */
     private void addType() {
         String answer = JOptionPane.showInputDialog(null,
                 "Add new type of medical parameter:",
@@ -80,61 +94,44 @@ public class UtilsPanel extends JPanel {
         typesComboBox.addItem(answer);
     }
 
+    /**
+     * Insert new data to table.
+     */
     private void insertRow() {
-        String[] result = showInsertDialog();
+        float[] result = showInsertDialog();
         if (result == null) {
             return;
         }
-        LocalDateTime date;
-        try {
-            date = LocalDateTime.of(
-                    Integer.parseInt(result[1]),
-                    Integer.parseInt(result[2]),
-                    Integer.parseInt(result[3]),
-                    Integer.parseInt(result[4]),
-                    Integer.parseInt(result[5])
-            );
-        } catch (NumberFormatException | DateTimeException e) {
-            if (result[1].isBlank() && result[2].isBlank() && result[3].isBlank() && result[4].isBlank() && result[5].isBlank()) {
-                date = LocalDateTime.now();
-            }
-            else {
-                JOptionPane.showMessageDialog(
-                        this,
-                        "Your provided wrong data, try again.",
-                        "Error",
-                        JOptionPane.PLAIN_MESSAGE
-                );
-                return;
-            }
-        }
 
-        float value;
-        try {
-            value = Float.parseFloat(result[0]);
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Your provided wrong data, try again.",
-                    "Error",
-                    JOptionPane.PLAIN_MESSAGE
-            );
-            return;
-        }
+        LocalDateTime date = LocalDateTime.of(
+                (int) result[1],
+                (int) result[2],
+                (int) result[3],
+                (int) result[4],
+                (int) result[5]
+        );
+
+        float value = result[0];
 
         dataManager.InsertNewRow(activeType, value, date);
         updateTable(dataManager.getRecord(activeType, value, date));
 
     }
 
+    /**
+     * Update table.
+     * @param dataRecord record to be added
+     */
     private void updateTable(DataRecord dataRecord) {
         model.addRow(dataRecord);
         model.fireTableRowsInserted(model.getRowCount() - 1, model.getRowCount() - 1);
         parent.repaint();
     }
 
+    /**
+     * Delete selected row from table.
+     */
     private void deleteRow() {
-        // TODO: Add exceptions!
         if (table.getSelectedRow() != -1) {
             int[] rows = table.getSelectedRows();
             for (int i=rows.length-1; i>=0; i--) {
@@ -156,6 +153,9 @@ public class UtilsPanel extends JPanel {
         }
     }
 
+    /**
+     * Checks if the table is empty.
+     */
     private void checkIfEmpty() {
         if (model.getRowCount() == 0) {
             typesComboBox.removeItem(activeType);
@@ -165,7 +165,11 @@ public class UtilsPanel extends JPanel {
         }
     }
 
-    private String[] showInsertDialog() {
+    /**
+     * Show insert dialog.
+     * @return values to add to table
+     */
+    private float[] showInsertDialog() {
         EntryDialog entryDialog = new EntryDialog();
         int answer = JOptionPane.showConfirmDialog(
                 this,
@@ -190,6 +194,9 @@ public class UtilsPanel extends JPanel {
         return null;
     }
 
+    /**
+     * Set up combo box, responsible for choosing type of medical parameter to be displayed.
+     */
     private void setupComboBox() {
         types = dataManager.getAllTypes();
         typesComboBox = new JComboBox<>(types.toArray(new String[0]));
@@ -199,6 +206,10 @@ public class UtilsPanel extends JPanel {
         this.add(typesComboBox, constraints);
     }
 
+    /**
+     * Select new type of medical parameter to be displayed.
+     * @param selectedItem selected type of parameter to be displayed
+     */
     private void selectNewType(String selectedItem) {
         activeType = selectedItem;
         model = new DataTableModel(selectedItem);
@@ -206,6 +217,10 @@ public class UtilsPanel extends JPanel {
         parent.repaint();
     }
 
+    /**
+     * Set new model of parameter.
+     * @param model model to be used
+     */
     public void setModel(DataTableModel model) {
         this.model = model;
     }

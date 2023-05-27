@@ -3,7 +3,9 @@ import java.awt.*;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
-
+/**
+ * Provides implementation of login window, used to log in to application.
+ */
 public class LoginWindow extends JFrame {
 
     private final GridBagConstraints constraints = new GridBagConstraints();
@@ -12,6 +14,9 @@ public class LoginWindow extends JFrame {
     private JPasswordField passwordEntry;
     private JCheckBox rememberMe;
 
+    /**
+     * Creates a new LoginWindow.
+     */
     LoginWindow( ) {
         this.setTitle("Login");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -31,6 +36,9 @@ public class LoginWindow extends JFrame {
         this.setVisible(true);
     }
 
+    /**
+     * Draw checkbox.
+     */
     private void drawCheckbox() {
         rememberMe = new JCheckBox("Remember me");
         constraints.gridwidth = 2;
@@ -38,6 +46,9 @@ public class LoginWindow extends JFrame {
         constraints.gridwidth = 1;
     }
 
+    /**
+     * Draw labels.
+     */
     private void drawLabels() {
         constraints.gridwidth = 2;
         constraints.weightx = 2;
@@ -54,6 +65,9 @@ public class LoginWindow extends JFrame {
         constraints.weightx = 1;
     }
 
+    /**
+     * Draw entries
+     */
     private void drawEntries() {
 
         constraints.fill = GridBagConstraints.HORIZONTAL;
@@ -71,7 +85,9 @@ public class LoginWindow extends JFrame {
         constraints.fill = GridBagConstraints.NONE;
     }
 
-
+    /**
+     * Draw buttons.
+     */
     private void drawButtons() {
 
         JButton confirmButton = new JButton();
@@ -85,12 +101,17 @@ public class LoginWindow extends JFrame {
 
     }
 
-
+    /**
+     * Open registration window.
+     */
     private void openRegisterWindow() {
         new RegisterWindow();
         this.dispose();
     }
 
+    /**
+     * Authorize user.
+     */
     private void authorizeUser() {
 
         AuthorizationManager manager = null;

@@ -3,6 +3,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Class responsible for managing connection to database.
+ */
 class DatabaseConnector {
 
     private enum Mode {EXPORT, IMPORT}
@@ -17,6 +20,10 @@ class DatabaseConnector {
     private final String regPath;
     private final String url;
 
+    /**
+     * Construct the database connector.
+     * @throws IOException Thrown when cannot find properties files
+     */
     DatabaseConnector() throws IOException {
         PropertiesManager propManager = new PropertiesManager("res/config.properties");
         this.user = propManager.getDBUser();
@@ -30,6 +37,9 @@ class DatabaseConnector {
         this.url = propManager.getUrl();
     }
 
+    /**
+     * Import database with authorization credentials, form backup file.
+     */
     void importAuthDB() {
         String command = generateCommand(authName, authPath, Mode.IMPORT);
         try {
@@ -39,16 +49,21 @@ class DatabaseConnector {
         }
     }
 
+    /**
+     * Export the database with the authorization credentials, to a backup file.
+     */
     void exportAuthDB() {
         String command = generateCommand(authName, authPath, Mode.EXPORT);
-//        System.out.println(command);
         try {
-            Runtime.getRuntime().exec("cmd /c start cmd.exe /K "+command);
+            Runtime.getRuntime().exec("cmd /c "+command);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
+    /**
+     * Import database with users information, form backup file.
+     */
     void importRegDB() {
         String command = generateCommand(regName, regPath, Mode.IMPORT);
         try {
@@ -58,6 +73,9 @@ class DatabaseConnector {
         }
     }
 
+    /**
+     * Export the database with users information, to a backup file.
+     */
     void exportRegDB() {
         String command = generateCommand(regName, regPath, Mode.EXPORT);
         try {
@@ -67,17 +85,28 @@ class DatabaseConnector {
         }
     }
 
+    /**
+     * Export the test database, to a backup file.
+     */
     void exportTest(String testName, String testPath) throws IOException {
         String command = generateCommand(testName, testPath, Mode.EXPORT);
         Runtime.getRuntime().exec("cmd /c "+command);
 
     }
 
+    /**
+     * Import test database, form backup file.
+     */
     void importTest(String testName, String testPath) throws IOException {
         String command = generateCommand(testName, testPath, Mode.IMPORT);
         Runtime.getRuntime().exec("cmd /c "+command);
     }
 
+    /**
+     * Get values from test database.
+     * @return number of rows in test database
+     * @throws SQLException Thrown when an error occurs while reading data from database
+     */
     private int getTestValues() throws SQLException {
         Connection connection = generateConnection();
         Statement statement;
@@ -92,6 +121,10 @@ class DatabaseConnector {
         return resultSet.getInt(1);
     }
 
+    /**
+     * Write test values ot test database.
+     * @throws SQLException Thrown when an error occurs while writing to the database
+     */
     private void writeTestValues() throws SQLException {
         Connection connection = generateConnection();
 
@@ -103,12 +136,26 @@ class DatabaseConnector {
         prepStmt.executeUpdate();
     }
 
+    /**
+     * Imports all databases from their backups files.
+     * @param testName test database name
+     * @param testPath path to test database
+     * @throws IOException When there is no test database backup file
+     */
     void importAll(String testName, String testPath) throws IOException {
         importAuthDB();
         importRegDB();
         importTest(testName, testPath);
     }
 
+    /**
+     * Test connection to database server.
+     * @param testName test database name
+     * @param testPath path to test database
+     * @throws IOException Thrown when there is no test
+     * @throws SQLException Thrown when error occurs during connecting to database server
+     * @throws InterruptedException Thrown when user exits the process during runtime
+     */
     void testConnection (String testName, String testPath) throws IOException, SQLException, InterruptedException {
         importAll(testName, testPath);
         TimeUnit.SECONDS.sleep(2); // TEMP!
@@ -125,6 +172,13 @@ class DatabaseConnector {
         }
     }
 
+    /**
+     * Get number of data records for given user and type.
+     * @param login user's login
+     * @param type type of medical parameter to look for
+     * @return number of records
+     * @throws SQLException Thrown when database malfunction
+     */
     int getNumberOfRows(String login, String type) throws SQLException {
         Connection connection = generateConnection();
         Statement statement;
@@ -139,10 +193,14 @@ class DatabaseConnector {
         return resultSet.getInt(1);
     }
 
+    /**
+     * Insert new record to the database.
+     * @param dataRecord Record to be inserted into the database
+     * @throws SQLException Thrown when it is not possible to insert the record into the database
+     */
     void insertRow(DataRecord dataRecord) throws SQLException {
         Connection connection = generateConnection();
 
-        // TODO: Add validation for rows (cannot add two identical rows, the same date and so on)
         String sqlStm = "INSERT INTO reg values (?, ?, ?, ?);";
 
         PreparedStatement prepStmt = connection.prepareStatement(sqlStm);
@@ -153,6 +211,11 @@ class DatabaseConnector {
         prepStmt.executeUpdate();
     }
 
+    /**
+     * Delete data record from the database.
+     * @param dataRecord Record to be deleted from the database
+     * @throws SQLException Thrown if an error occurs during deleting record from the database
+     */
     void deleteRow(DataRecord dataRecord) throws SQLException {
         Connection connection = generateConnection();
 
@@ -165,20 +228,15 @@ class DatabaseConnector {
         prepStmt.executeUpdate();
     }
 
-    void testConfiguration () throws SQLException {
-        Connection connection = generateConnection();
-
-        Statement statement = connection.createStatement();
-
-
-        ResultSet resultSet = statement.executeQuery("select * from auth;");
-        resultSet.next();
-        resultSet.getString(1);
-    }
-
+    /**
+     * Get all records from the database for given user and type.
+     * @param login user's login
+     * @param type type of medical parameter to retrieve from the database
+     * @return List of data records retrieved from the database
+     * @throws SQLException Thrown if an error occurs during retrieving data from database
+     */
     ArrayList<DataRecord> getDataRecords(String login, String type) throws SQLException {
         int rowsNumber = getNumberOfRows(login, type);
-        int i = 0;
         Connection connection = generateConnection();
         Statement statement;
         try {
@@ -199,11 +257,16 @@ class DatabaseConnector {
                     resultSet.getString(2)
                     )
             );
-            i++;
         }
         return data;
     }
 
+    /**
+     * Checks whether login is already used.
+     * @param login Login to be checked
+     * @return True if login is not used, otherwise false
+     * @throws SQLException Thrown when error occurs when connecting to database
+     */
     boolean validateRegistration(String login) throws SQLException {
         Connection connection = generateConnection();
         Statement statement;
@@ -223,6 +286,12 @@ class DatabaseConnector {
         return true;
     }
 
+    /**
+     * Change the value of the certain record.
+     * @param dataRecord Record with new medical parameter value
+     * @param oldValue old value of the medical parameter
+     * @throws SQLException Thrown when error occurs during connecting to database
+     */
     void setValue(DataRecord dataRecord, float oldValue) throws SQLException {
         Connection connection = generateConnection();
         String statement = "UPDATE reg SET value=? WHERE login=? AND type=? AND register_time=? AND value=?;";
@@ -236,6 +305,12 @@ class DatabaseConnector {
         preparedStatement.executeUpdate();
     }
 
+    /**
+     * Get all types of medical parameters for certain user.
+     * @param login user's login
+     * @return list of all types of medical parameters
+     * @throws SQLException Thrown when error occurs during connection to database
+     */
     ArrayList<String> getTypes(String login) throws SQLException {
         Connection connection = generateConnection();
         Statement statement;
@@ -252,6 +327,12 @@ class DatabaseConnector {
         return result;
     }
 
+    /**
+     * Register a new user and writes login and hashed password to the database.
+     * @param login Login of the new user
+     * @param hash Hash of the password of the new user
+     * @throws SQLException Thrown if an error occurs while connecting to the database
+     */
     void registerUser(String login, String hash) throws SQLException {
         Connection connection = generateConnection();
 
@@ -262,6 +343,13 @@ class DatabaseConnector {
         prepStmt.executeUpdate();
     }
 
+    /**
+     * Get hashed password for provided user.
+     * @param login User's login
+     * @return Hashed password
+     * @throws SQLException Thrown if an error occurs while connecting to the database
+     * @throws AuthorizationException When an error occurs during authorization
+     */
     String getHash (String login) throws SQLException, AuthorizationException {
         Connection connection = generateConnection();
         Statement statement = connection.createStatement();
@@ -276,6 +364,10 @@ class DatabaseConnector {
         }
     }
 
+    /**
+     * Connects to database server.
+     * @return Connection to database server
+     */
     private Connection generateConnection() {
         try {
             return DriverManager.getConnection(url, user, password);
@@ -284,7 +376,13 @@ class DatabaseConnector {
         }
     }
 
-
+    /**
+     * Generate command to import or export database.
+     * @param tableName Date of table to export/import
+     * @param tablePath Path to a backup file of the table
+     * @param mode Export or import mode
+     * @return Command to import or export database
+     */
     private String generateCommand(String tableName, String tablePath, Mode mode) {
         switch (mode) {
             case EXPORT -> {

@@ -1,7 +1,10 @@
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
-// Plotly
+
+/**
+ * Provides implementation of MainWindow class, containing utils panel, plot panel and table panel.
+ */
 public class MainWindow extends JFrame {
 
     private final GridBagConstraints constraints = new GridBagConstraints();
@@ -10,6 +13,9 @@ public class MainWindow extends JFrame {
     private PlotPanel plotPanel;
     private UtilsPanel utilsPanel;
 
+    /**
+     * Create new MainWindow instance.
+     */
     MainWindow() {
         this.setTitle("Medical parameters register");
         this.setSize(1080, 720);
@@ -39,6 +45,10 @@ public class MainWindow extends JFrame {
         this.setVisible(true);
     }
 
+    /**
+     * Set model of the table.
+     * @param model table model
+     */
     public void setModel(DataTableModel model) {
         this.model = model;
         tablePanel.table.setModel(model);
@@ -46,6 +56,10 @@ public class MainWindow extends JFrame {
 
     }
 
+    /**
+     * Set all panels.
+     * @param type type of medical parameter to be displayed
+     */
     private void setPanels(String type) {
         tablePanel = new TablePanel(type, this);
         constraints.gridx = 0;
@@ -54,7 +68,7 @@ public class MainWindow extends JFrame {
         this.add(tablePanel, constraints);
         constraints.gridheight = 1;
 
-        plotPanel = new PlotPanel(tablePanel.tableModel, this);
+        plotPanel = new PlotPanel(tablePanel.tableModel);
         constraints.gridy = 0;
         constraints.gridx = 1;
         this.add(plotPanel, constraints);

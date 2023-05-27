@@ -1,37 +1,17 @@
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
-import java.sql.SQLException;
 
-// TODO: Add documentation!!!
-// TODO: Create class responsible for drawing plots (in main window)
-// TODO: Ask Ola for duck drawing
-
+/**
+ * Main class, run the whole application.
+ */
 public class Main {
-    public static void main(String[] args) throws IOException, SQLException, NoSuchAlgorithmException, InterruptedException {
-
-        // Temporary test area
-
-        DatabaseConnector connector = new DatabaseConnector();
-//        connector.exportTest("test", "SQL/test.sql");
-
-//        AuthorizationManager authManager = new AuthorizationManager();
-//        PropertiesManager propertiesManager = new PropertiesManager("res/config.properties");
-//        DataManager dataManager = new DataManager("admin");
-
-//        connector.exportRegDB();
-//        connector.exportAuthDB();
-
-//        DataRecord[] data = dataManager.getDataRecords("temperature");
-//        System.out.println(Arrays.toString(data));
-
-
-//        authManager.authorizeUser("Szymon Stanislaw Lasota", "mySecurePassword"); // do not change!
-//        new ConfigurationWindow();
-//        new LoginWindow();
+    public static void main(String[] args) {
         run();
 
     }
 
+    /**
+     * Run the whole application.
+     */
     private static void run() {
         PropertiesManager propertiesManager;
         try {

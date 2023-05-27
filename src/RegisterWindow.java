@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
+/**
+ * Provides implementation of Register window class, responsible for registering a new user.
+ */
 public class RegisterWindow extends JFrame {
 
     private final GridBagConstraints constraints = new GridBagConstraints();
@@ -12,6 +15,9 @@ public class RegisterWindow extends JFrame {
     private JPasswordField passwordEntry;
     private JPasswordField repeatPassword;
 
+    /**
+     * Constructor of register window.
+     */
     RegisterWindow() {
         this.setTitle("Register");
         this.setSize(700, 420);
@@ -30,6 +36,9 @@ public class RegisterWindow extends JFrame {
         this.setVisible(true);
     }
 
+    /**
+     * Draw buttons.
+     */
     private void drawButtons() {
         JButton confirmButton = new JButton();
         confirmButton.setText("Create account");
@@ -42,6 +51,9 @@ public class RegisterWindow extends JFrame {
 
     }
 
+    /**
+     * Draw labels.
+     */
     private void drawLabels() {
         constraints.gridwidth = 2;
         constraints.weightx = 2;
@@ -63,6 +75,9 @@ public class RegisterWindow extends JFrame {
         constraints.weightx = 1;
     }
 
+    /**
+     * Draw entries.
+     */
     private void drawEntries() {
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.gridwidth = 2;
@@ -83,6 +98,9 @@ public class RegisterWindow extends JFrame {
 
     }
 
+    /**
+     * Confirm registration of new user.
+     */
     private void confirmRegistration() {
         AuthorizationManager manager;
         try {
@@ -124,7 +142,7 @@ public class RegisterWindow extends JFrame {
                 JOptionPane.showMessageDialog(
                         this,
                         "Login already used, try again with different one.",
-                        "Regiter error",
+                        "Register error",
                         JOptionPane.ERROR_MESSAGE
                 );
                 return;
@@ -152,11 +170,14 @@ public class RegisterWindow extends JFrame {
         JOptionPane.showMessageDialog(
                 this,
                 "Password and repeat password fields are different, check if they are the same, then try again.",
-                "Regiter error",
+                "Register error",
                 JOptionPane.ERROR_MESSAGE
         );
     }
 
+    /**
+     * Open login window.
+     */
     private void openLoginButton() {
         new LoginWindow();
         this.dispose();

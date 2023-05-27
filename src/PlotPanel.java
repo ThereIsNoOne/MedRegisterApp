@@ -2,12 +2,16 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Line2D;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
+/**
+ * Provides implementation of plot panel, responsible for drawing the plots.
+ */
 public class PlotPanel extends JPanel {
 
-    private final int margin = 20;
+    private final int margin = 40;
     private final int offset = margin* 2/3;
     private Graphics2D graph;
     private int plotWidth;
@@ -17,11 +21,19 @@ public class PlotPanel extends JPanel {
     float[] vertical = new float[2]; // min max vertical values
     LocalDateTime[] horizontal = new LocalDateTime[2]; // min max horizontal values
 
-    PlotPanel(DataTableModel model, MainWindow parent) {
+    /**
+     * Creates a new plot panel.
+     * @param model model of table containing data for the plot
+     */
+    PlotPanel(DataTableModel model) {
         this.model = model;
         this.setBackground(new Color(0xf0f0f0));
     }
 
+    /**
+     * Paints components.
+     * @param g the <code>Graphics</code> object to protect
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -33,13 +45,17 @@ public class PlotPanel extends JPanel {
         plotHeight = getHeight();
         points = model.getData();
 
+        vertical = getMinMaxValue();
+        horizontal = getMinMaxDate();
+
         drawAxes();
         drawPoints();
     }
 
+    /**
+     * Draw points on the graph.
+     */
     private void drawPoints() {
-        vertical = getMinMaxValue();
-        horizontal = getMinMaxDate();
         long horizontalAxisLength = getHorizontalAxisLength();
         long verticalAxisLength = getVerticalAxisLength();
         long horizontalDistance = horizontal[0].until(horizontal[1], ChronoUnit.SECONDS);
@@ -54,28 +70,42 @@ public class PlotPanel extends JPanel {
         for (DataRecord record : points) {
             int x = start - (int) (horizontalAxisLength * ((double) record.getDate().until(horizontal[1], ChronoUnit.SECONDS)/horizontalDistance));
             int y = margin + offset + (int) (verticalAxisLength * (double)((vertical[1] - record.getValue())/verticalDistance));
-            System.out.println(record);
             drawCircle(x, y);
         }
     }
 
+    /**
+     * Calculates length of vertical axis.
+     * @return length of vertical axis.
+     */
     private long getVerticalAxisLength() {
         return getHeight()-margin-offset - (margin + offset);
     }
 
+    /**
+     * Draw circle of certain coordinates.
+     * @param x x coordinate
+     * @param y y coordinate
+     */
     private void drawCircle(int x, int y) {
         int radius = 6;
         x = x - (radius/2);
         y = y - (radius/2);
-        System.out.println(x);
-        System.out.println(y);
         graph.fillOval(x, y, radius, radius);
     }
 
+    /**
+     * Calculates horizontal axis length.
+     * @return horizontal axis length
+     */
     private long getHorizontalAxisLength() {
         return getWidth() - margin - offset - (margin + offset);
     }
 
+    /**
+     * Get min and max values of provided data.
+     * @return min and max values
+     */
     private float[] getMinMaxValue() {
         float[] result = {Float.MAX_VALUE, Float.MIN_VALUE};
         for (DataRecord record : points) {
@@ -89,6 +119,10 @@ public class PlotPanel extends JPanel {
         return result;
     }
 
+    /**
+     * Get the earliest and latest date of provided data.
+     * @return earliest and latest date
+     */
     private LocalDateTime[] getMinMaxDate() {
         LocalDateTime[] result = {LocalDateTime.MAX, LocalDateTime.MIN};
         for (DataRecord record : points) {
@@ -102,14 +136,39 @@ public class PlotPanel extends JPanel {
         return result;
     }
 
+    /**
+     * Draw axes and labels.
+     */
     private void drawAxes() {
-        // TODO: Add ticks
-        graph.draw(new Line2D.Double(margin, margin, margin, plotHeight-margin));
-        graph.draw(new Line2D.Double(margin, plotHeight - margin, plotWidth - margin, plotHeight-margin));
+        graph.draw(new Line2D.Double(margin, margin, margin, plotHeight-margin)); // y axis
+        int tickLength = 5;
+        graph.draw(new Line2D.Double(margin- tickLength, plotHeight-margin-offset, margin+ tickLength, plotHeight-margin-offset));
+        graph.draw(new Line2D.Double(margin- tickLength, margin+offset, margin+ tickLength, margin+offset));
+        graph.drawString(String.valueOf(vertical[0]), tickLength, plotHeight-margin-offset);
+        graph.drawString(String.valueOf(vertical[1]), tickLength, margin+offset);
+
+        graph.draw(new Line2D.Double(margin, plotHeight - margin, plotWidth - margin, plotHeight-margin)); // x axis
+        graph.draw(new Line2D.Double(margin+offset, plotHeight-margin+ tickLength, margin+offset, plotHeight-margin- tickLength));
+        graph.draw(new Line2D.Double(plotWidth-margin-offset, plotHeight-margin+ tickLength, plotWidth-margin-offset, plotHeight-margin- tickLength));
+        graph.drawString(formatDate(horizontal[0]), margin+offset, plotHeight-offset);
+        graph.drawString(formatDate(horizontal[1]), plotWidth-margin-offset, plotHeight-offset);
     }
 
+    /**
+     * Format date to pattern yyyy-MM-dd.
+     * @param date date to format
+     * @return formatted date
+     */
+    private String formatDate(LocalDateTime date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return date.format(formatter);
+    }
+
+    /**
+     * Set new model of data.
+     * @param model new table model
+     */
     public void setModel(DataTableModel model) {
         this.model = model;
-
     }
 }

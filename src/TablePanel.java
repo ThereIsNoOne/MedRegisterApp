@@ -1,12 +1,20 @@
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Class representing table panel, responsible for drawing table.
+ */
 public class TablePanel extends JPanel {
 
     private final GridBagConstraints constraints = new GridBagConstraints();
     DataTableModel tableModel;
     JTable table;
 
+    /**
+     * Construct the table panel
+     * @param type type of medical parameter
+     * @param parent parent component
+     */
     TablePanel(String type, MainWindow parent) {
         this.setBackground(new Color(0x404040));
         this.setLayout(new GridBagLayout());
@@ -20,6 +28,9 @@ public class TablePanel extends JPanel {
         setUpTable();
     }
 
+    /**
+     * Draw and setup table.
+     */
     private void setUpTable() {
         this.table = new JTable(tableModel);
         constraints.gridx = 0;

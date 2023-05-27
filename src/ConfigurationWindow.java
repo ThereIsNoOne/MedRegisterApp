@@ -3,6 +3,9 @@ import java.awt.*;
 import java.io.IOException;
 import java.sql.SQLException;
 
+/**
+ * Configuration window of the application, it is responsible for getting information about the database from user.
+ */
 public class ConfigurationWindow extends JFrame {
 
     private final GridBagConstraints constraints = new GridBagConstraints();
@@ -13,6 +16,9 @@ public class ConfigurationWindow extends JFrame {
     private JTextField databaseNameEntry;
     private JTextField databasePathEntry;
 
+    /**
+     * Constructor of the ConfigurationWindow, sets basic properties (color, title, size) and draws whole window.
+     */
     ConfigurationWindow() {
         this.setTitle("Database configuration");
             this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -31,6 +37,9 @@ public class ConfigurationWindow extends JFrame {
         this.setVisible(true);
     }
 
+    /**
+     * Draw all the labels.
+     */
     private void drawLabels() {
         constraints.gridwidth = 3;
         constraints.weightx = 2;
@@ -58,6 +67,9 @@ public class ConfigurationWindow extends JFrame {
         constraints.weightx = 1;
     }
 
+    /**
+     * Draw buttons.
+     */
     private void drawButtons() {
         JButton confirmButton = new JButton();
         confirmButton.setText("Confirm");
@@ -70,6 +82,9 @@ public class ConfigurationWindow extends JFrame {
         SetUpUtils.setUpButton(this, openDBPath, 2, 9, constraints);
     }
 
+    /**
+     * Draw entries.
+     */
     private void drawEntries() {
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.gridwidth = 3;
@@ -97,8 +112,10 @@ public class ConfigurationWindow extends JFrame {
     }
 
 
+    /**
+     * Confirm whether the database is properly configured, if not shows error message, else starts login window.
+     */
     private void confirmDB () {
-        // connectToDatabase("3306", "root", "jkl123JKL!@#", "medreg", "C:\Program Files\MySQL\MySQL Server 8.0\bin\");
 
         PropertiesManager propertiesManager;
         try {
@@ -146,6 +163,9 @@ public class ConfigurationWindow extends JFrame {
         this.dispose();
     }
 
+    /**
+     * Open dialog to choose path to mysql server CLI.
+     */
     private void openPathChooser() {
         JFileChooser chooser = new JFileChooser("c:");
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
