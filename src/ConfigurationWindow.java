@@ -167,7 +167,7 @@ public class ConfigurationWindow extends JFrame {
      * Open dialog to choose path to mysql server CLI.
      */
     private void openPathChooser() {
-        JFileChooser chooser = new JFileChooser("c:");
+        JFileChooser chooser = new JFileChooser();
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         int response = chooser.showOpenDialog(this);
         if (response == JFileChooser.APPROVE_OPTION) {

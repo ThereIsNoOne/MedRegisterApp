@@ -110,7 +110,15 @@ public class UtilsPanel extends JPanel {
                 (int) result[4],
                 (int) result[5]
         );
-
+        if (date.isAfter(LocalDateTime.now())) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Date you have chosen is in the future.",
+                    "Error!",
+                    JOptionPane.ERROR_MESSAGE
+            );
+            return;
+        }
         float value = result[0];
 
         dataManager.InsertNewRow(activeType, value, date);
