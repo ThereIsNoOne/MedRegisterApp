@@ -34,7 +34,7 @@ CREATE TABLE `auth` (
 
 LOCK TABLES `auth` WRITE;
 /*!40000 ALTER TABLE `auth` DISABLE KEYS */;
-INSERT INTO `auth` (`login`, `hash`) VALUES ('admin','55f55e982dfcd7f878993ec61c361009'),('admin2','761e9361c88d23f46163b221f141652d'),('tester1','16bcbb61e1c534d3ba6770e5531b2a63'),('Szymon Stanislaw Lasota','675e279e16b0b0b391ea740fa4630d38'),('FirstUser','f76806404126e786dab333f061d50bc1'),('SzymonLas','08bbc7d371ad1a01cd0b7f5aaba5cbb0'),('tester2','b547861dcab956c7b782476e7e70af48'),('PrzykladowyUzytkownik','e3f010023bfae8499dc662a84b2d1025'),('przykladowyUzytkownik','e3f010023bfae8499dc662a84b2d1025');
+INSERT INTO `auth` (`login`, `hash`) VALUES ('admin','55f55e982dfcd7f878993ec61c361009'),('admin2','761e9361c88d23f46163b221f141652d'),('tester1','16bcbb61e1c534d3ba6770e5531b2a63'),('Szymon Stanislaw Lasota','675e279e16b0b0b391ea740fa4630d38'),('FirstUser','f76806404126e786dab333f061d50bc1'),('SzymonLas','08bbc7d371ad1a01cd0b7f5aaba5cbb0'),('tester2','b547861dcab956c7b782476e7e70af48'),('PrzykladowyUzytkownik','e3f010023bfae8499dc662a84b2d1025'),('przykladowyUzytkownik','e3f010023bfae8499dc662a84b2d1025'),('NewAcc','054ef135f4cf99100302fdc37ff0cd09');
 /*!40000 ALTER TABLE `auth` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -47,4 +47,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-05-29 13:32:04
+-- Dump completed on 2023-05-29 22:57:26

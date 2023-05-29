@@ -35,7 +35,7 @@ public class Main {
 
 }
 /*
-Temporary passwords for test users
+Temporary passwords for test users, feel free to use
 admin admin123
 admin2 admin2
 tester1 tester1
